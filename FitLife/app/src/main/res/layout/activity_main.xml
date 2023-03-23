@@ -11,7 +11,16 @@
         android:id="@+id/page_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/navigation_bar" />
+        android:layout_above="@+id/navigation_bar" >
+
+        <TextView
+            android:id="@+id/weightView"
+            android:layout_width="match_parent"
+            android:layout_height="53dp"
+            android:gravity="center"
+            android:textSize="35dp"
+            android:text="TextView" />
+    </FrameLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation_bar"

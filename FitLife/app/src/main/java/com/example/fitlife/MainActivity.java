@@ -1,6 +1,8 @@
 package com.example.fitlife;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -16,12 +18,17 @@ public class MainActivity extends AppCompatActivity {
     SavedWorkoutsFragment savedWorkoutsFragment = new SavedWorkoutsFragment();
     ProfileFragment profileFragment = new ProfileFragment();
 
+    TextView userWeight;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         bottomNavigationView = findViewById(R.id.navigation_bar);
+        userWeight = findViewById(R.id.weightView);
+        userWeight.setText(155+"lbs");
 
         fragmentManager.beginTransaction().replace(R.id.page_container, homeFragment).commit();
 
