@@ -1,13 +1,20 @@
 package com.example.fitlife;
 
-import android.annotation.SuppressLint;
+import android.graphics.Rect;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 
 public class MainActivity extends AppCompatActivity {
     FragmentManager fragmentManager = getSupportFragmentManager();
@@ -17,9 +24,7 @@ public class MainActivity extends AppCompatActivity {
     DiscoverFragment discoverFragment = new DiscoverFragment();
     SavedWorkoutsFragment savedWorkoutsFragment = new SavedWorkoutsFragment();
     ProfileFragment profileFragment = new ProfileFragment();
-
-    TextView userWeight;
-
+    Fragment currentActive;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,28 +32,58 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         bottomNavigationView = findViewById(R.id.navigation_bar);
-        userWeight = findViewById(R.id.weightView);
-        userWeight.setText(155+"lbs");
 
-        fragmentManager.beginTransaction().replace(R.id.page_container, homeFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.page_container, homeFragment).hide(homeFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.page_container, discoverFragment).hide(discoverFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.page_container, savedWorkoutsFragment).hide(savedWorkoutsFragment).commit();
+        fragmentManager.beginTransaction().add(R.id.page_container, profileFragment).hide(profileFragment).commit();
 
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            switch (item.getItemId()){
-                case R.id.home:
-                    fragmentManager.beginTransaction().replace(R.id.page_container, homeFragment).commit();
+        fragmentManager.beginTransaction().show(homeFragment).commit();
+        currentActive = homeFragment;
+
+        bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if(item.getItemId() == R.id.home){
+                    fragmentManager.beginTransaction().hide(currentActive).show(homeFragment).commit();
+                    currentActive = homeFragment;
                     return true;
-                case R.id.discover:
-                    fragmentManager.beginTransaction().replace(R.id.page_container, discoverFragment).commit();
+                } else if(item.getItemId() == R.id.discover){
+                    fragmentManager.beginTransaction().hide(currentActive).show(discoverFragment).commit();
+                    currentActive = discoverFragment;
                     return true;
-                case R.id.saved_workouts:
-                    fragmentManager.beginTransaction().replace(R.id.page_container, savedWorkoutsFragment).commit();
+                } else if(item.getItemId() == R.id.saved_workouts){
+                    fragmentManager.beginTransaction().hide(currentActive).show(savedWorkoutsFragment).commit();
+                    currentActive = savedWorkoutsFragment;
                     return true;
-                case R.id.profile:
-                    fragmentManager.beginTransaction().replace(R.id.page_container, profileFragment).commit();
+                } else if(item.getItemId() == R.id.profile){
+                    fragmentManager.beginTransaction().hide(currentActive).show(profileFragment).commit();
+                    currentActive = profileFragment;
                     return true;
+                }
+
+                return false;
             }
-
-            return false;
         });
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+            View view = getCurrentFocus();
+
+            if (view instanceof EditText) {
+                Rect outRect = new Rect();
+                view.getGlobalVisibleRect(outRect);
+
+                if (!outRect.contains((int)ev.getRawX(), (int)ev.getRawY())) {
+                    view.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(MainActivity.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                }
+            }
+        }
+
+        return super.dispatchTouchEvent(ev);
     }
 }

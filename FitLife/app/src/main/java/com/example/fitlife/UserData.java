@@ -1,6 +1,6 @@
 package com.example.fitlife;
 
-public class UserModel {
+public class UserData {
     //TODO Potentially add any weight/height/age fields for use in db and app
     //Variables
     private int user_id;
@@ -11,7 +11,7 @@ public class UserModel {
     private String password;
 
     //Constructor
-    public UserModel(int user_id, String fname, String lname, String email, String username, String password) {
+    public UserData(int user_id, String fname, String lname, String email, String username, String password) {
         this.user_id = user_id;
         this.fname = fname;
         this.lname = lname;
@@ -21,7 +21,7 @@ public class UserModel {
     }
 
     //Getters and Setters
-    public UserModel() {
+    public UserData() {
     }
 
     public int getUserId() {

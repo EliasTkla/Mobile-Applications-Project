@@ -23,12 +23,6 @@
             android:src="@drawable/ic_baseline_add_24"
             app:maxImageSize="30dp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="Saved Workout Routines" />
-
         <ListView
             android:id="@+id/l_routines"
             android:layout_width="match_parent"
