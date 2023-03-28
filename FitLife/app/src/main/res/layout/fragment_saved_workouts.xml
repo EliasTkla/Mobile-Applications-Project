@@ -6,20 +6,175 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".SavedWorkoutsFragment">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/create_workout_btn"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_margin="10dp"
-        android:contentDescription="create a workout program"
-        android:src="@drawable/ic_baseline_add_24"
-        app:maxImageSize="30dp"/>
-
-    <TextView
+    <!--Main Saved Workouts View-->
+    <FrameLayout
+        android:id="@+id/saved_routines"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Saved Workouts"
-        android:gravity="center"/>
+        android:visibility="visible">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/create_routine_btn"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_margin="10dp"
+            android:contentDescription="create a workout program"
+            android:src="@drawable/ic_baseline_add_24"
+            app:maxImageSize="30dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="Saved Workout Routines" />
+
+        <ListView
+            android:id="@+id/l_routines"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp" />
+
+    </FrameLayout>
+
+    <!--Create Workout Routine View-->
+    <LinearLayout
+        android:id="@+id/new_routine"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="New Workout Routine"
+            android:textSize="30dp" />
+
+        <EditText
+            android:id="@+id/workout_name"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:ems="10"
+            android:hint="Workout Routine Name"
+            android:inputType="textPersonName" />
+
+        <Button
+            android:id="@+id/bt_add_routine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:text="Create Routine" />
+
+    </LinearLayout>
+
+    <!--Add Workout To Routine View-->
+    <LinearLayout
+        android:id="@+id/new_workout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="New Workout"
+            android:textSize="30dp" />
+
+        <EditText
+            android:id="@+id/set_Workout"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="30dp"
+            android:ems="10"
+            android:hint="Workout Name"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/set_Weight"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:ems="10"
+            android:hint="Weight in lbs"
+            android:inputType="number" />
+
+        <TableRow
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <EditText
+                android:id="@+id/set_reps"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="20dp"
+                android:ems="10"
+                android:hint="Reps"
+                android:inputType="number" />
+
+            <EditText
+                android:id="@+id/set_Sets"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:ems="10"
+                android:hint="Sets"
+                android:inputType="number" />
+        </TableRow>
+
+        <Button
+            android:id="@+id/bt_Add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:text="Add To Routine" />
+
+    </LinearLayout>
+
+    <!--Workout Routine Management View-->
+    <FrameLayout
+        android:id="@+id/created_routine"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_workout_to_routine_btn"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_margin="10dp"
+            android:contentDescription="Add a workout to saved routine"
+            android:src="@drawable/ic_baseline_add_24"
+            app:maxImageSize="30dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:gravity="left"
+            android:padding="10dp"
+            android:text="Binded Routine Name"
+            android:textSize="20dp" />
+
+        <ListView
+            android:id="@+id/sr_l_workouts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp" />
+
+    </FrameLayout>
 
 </FrameLayout>

@@ -21,15 +21,34 @@ public class dbObject extends SQLiteOpenHelper {
         super(context, "workouts.db", null, 1);
     }
 
+    //onCreate will create all of our necessary tables
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String createTables = "CREATE TABLE WORKOUTS (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+
+        //TODO Add any required details for user's weight and height <- possibly for Elias or Supreyo to do
+        String createUsersTable = "CREATE TABLE USERS " +
+                "(USER_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "FNAME TEXT, " +
+                "LNAME TEXT, " +
+                "EMAIL TEXT, " +
+                "USERNAME TEXT, " +
+                "PASSWORD TEXT)";
+        String createRoutinesTable = "CREATE TABLE ROUTINES " +
+                "(ROUTINE_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "ROUTINE_NAME TEXT, " +
+                "FOREIGN KEY(USER_ID) REFERENCES USERS(USER_ID))";
+        String createWorkoutsTable = "CREATE TABLE WORKOUTS " +
+                "(WORKOUT_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 "WORKOUT_NAME TEXT, " +
                 "WEIGHT INT, " +
                 "REPS INT, " +
-                "SETS INT)";
+                "SETS INT, " +
+                "ROUTINEID INT, "+
+                "FOREIGN KEY(ROUTINE_ID) REFERENCES ROUTINES(ROUTINE_ID))";
 
-        sqLiteDatabase.execSQL(createTables);
+        sqLiteDatabase.execSQL(createUsersTable);
+        sqLiteDatabase.execSQL(createRoutinesTable);
+        sqLiteDatabase.execSQL(createWorkoutsTable);
     }
 
     @Override
@@ -37,7 +56,34 @@ public class dbObject extends SQLiteOpenHelper {
 
     }
 
-    public boolean addToTable(WorkoutModel wModel) {
+    //Users DB Helper Methods
+    //TODO - Create an EditUsers method potentially in here or where the editing will access the db to write
+    public boolean addUser(UserModel uModel) {
+        return false;
+    }
+
+    public boolean deleteUser(UserModel uModel) {
+        return false;
+    }
+
+
+
+    //Saved Workouts DB Helper Methods
+    public boolean addRoutines(RoutinesModel rModel) {
+        return false;
+    }
+
+    public boolean deleteRoutine(RoutinesModel rModel) {
+        return false;
+    }
+
+    public List<RoutinesModel> getRoutines() {
+        return null;
+    }
+
+    //Individual Workouts DB Helper Methods
+
+    public boolean addWorkout(WorkoutModel wModel) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -52,7 +98,7 @@ public class dbObject extends SQLiteOpenHelper {
         return workouts != -1;
     }
 
-    public boolean deleteRecord(WorkoutModel wModel) {
+    public boolean deleteWorkout(WorkoutModel wModel) {
         SQLiteDatabase db = this.getWritableDatabase();
         String deleteQuery = "DELETE FROM WORKOUTS WHERE ID = " + wModel.getId();
         Cursor c = db.rawQuery(deleteQuery, null);
