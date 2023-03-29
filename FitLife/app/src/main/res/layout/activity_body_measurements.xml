@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".BodyMeasurementsActivity">
+
+    <LinearLayout
+        android:id="@+id/personal_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Record your new information"
+            android:textSize="20sp"
+            android:layout_marginTop="50dp"
+            android:gravity="center"
+            android:textColor="@color/teal_700"/>
+
+        <EditText
+            android:id="@+id/updateWeight"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:hint="Weight"
+            android:minHeight="48dp"
+            android:textSize="15sp"
+            android:autofillHints=""
+            android:inputType="number" />
+
+        <EditText
+            android:id="@+id/updateBodyFat"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:hint="Body Fat %"
+            android:minHeight="48dp"
+            android:textSize="15sp"
+            android:inputType="number"
+            android:autofillHints="" />
+
+        <EditText
+            android:id="@+id/updateDate"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:hint="Date"
+            android:minHeight="48dp"
+            android:textSize="15sp"
+            android:clickable="false"
+            android:cursorVisible="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:autofillHints="" />
+
+        <Button
+            android:id="@+id/addBtn"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp"
+            android:backgroundTint="@color/teal_700"
+            android:text="Add"
+            android:textColor="#000000"
+            tools:ignore="TextContrastCheck" />
+    </LinearLayout>
+</LinearLayout>
