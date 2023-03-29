@@ -50,18 +50,18 @@
             android:textSize="15dp" />
     </FrameLayout>
 
-    <RelativeLayout
+    <ScrollView
+        android:id="@+id/cardScrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="220dp"
         android:layout_below="@+id/date_container">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/progressList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
         </androidx.recyclerview.widget.RecyclerView>
-    </RelativeLayout>
+    </ScrollView>
 
     <View
         android:id="@+id/divider"
@@ -69,44 +69,24 @@
         android:layout_height="2dp"
         android:layout_centerInParent="true"
         android:layout_marginTop="15dp"
+        android:layout_below="@+id/cardScrollView"
         android:background="@android:color/darker_gray"/>
 
     <com.jjoe64.graphview.GraphView
-        android:id="@+id/weightGraph"
+        android:id="@+id/trendGraph"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="170dp"
         android:layout_marginTop="7dp"
         android:layout_below="@+id/divider"/>
 
-    <com.jjoe64.graphview.GraphView
-        android:id="@+id/bodyFatGraph"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_marginTop="7dp"
-        android:visibility="gone"
-        android:layout_below="@+id/divider"/>
-
     <Button
-        android:id="@+id/weightSwitchButton"
+        android:id="@+id/switchButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/weightGraph"
+        android:layout_below="@+id/trendGraph"
         android:layout_centerVertical="true"
         android:layout_centerInParent="true"
         android:backgroundTint="@color/teal_200"
-        android:text="Weight"
-        android:layout_marginTop="4dp" />
-
-    <Button
-        android:id="@+id/bodyFatSwitchButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/bodyFatGraph"
-        android:layout_centerVertical="true"
-        android:layout_centerInParent="true"
-        android:visibility="gone"
-        android:backgroundTint="@color/teal_200"
-        android:text="Body Fat"
-        android:layout_marginTop="4dp" />
+        android:text="Weight" />
 
 </RelativeLayout>

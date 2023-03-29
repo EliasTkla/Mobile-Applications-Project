@@ -3,9 +3,8 @@ package com.example.fitlife;
 public class ProgressData {
     private String currentTitle, goalTitle;
     private String currentTitleDisplay, goalTitleDisplay, startingTitle, progressLeft, progressTypeTitle;
-    private int progress;
 
-    public ProgressData(String currentTitle, String currentTitleDisplay, String goalTitle, String goalTitleDisplay, String startingTitle, String progressLeft, String progressTypeTitle, int progress){
+    public ProgressData(String currentTitle, String currentTitleDisplay, String goalTitle, String goalTitleDisplay, String startingTitle, String progressLeft, String progressTypeTitle){
         this.currentTitle = currentTitle;
         this.currentTitleDisplay = currentTitleDisplay;
         this.goalTitle = goalTitle;
@@ -13,7 +12,6 @@ public class ProgressData {
         this.startingTitle = startingTitle;
         this.progressLeft = progressLeft;
         this.progressTypeTitle = progressTypeTitle;
-        this.progress = progress;
     }
 
     public String getCurrentTitle(){

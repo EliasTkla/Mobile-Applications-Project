@@ -36,10 +36,12 @@ public class HomeFragment extends Fragment {
     FloatingActionButton addNewMeasurements;
     RecyclerView progressCardView;
     ArrayList<ProgressData> progressCards = new ArrayList<>();
-    GraphView graphWeight, graphBodyFat;
+    GraphView graph;
     LineGraphSeries<DataPoint> weightSeries, bodyFatSeries;
     DataPoint[] weightDP, bodyFatDP;
-    Button weightSwitchGraph, bodyFatSwitchGraph;
+    GridLabelRenderer renderer;
+    Button switchGraph;
+    boolean clicked = false;
 
 //    double getCurrentWeight = 165;
 //    double getGoalCurrentWeight = 175;
@@ -60,9 +62,6 @@ public class HomeFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         progressCardView.setLayoutManager(layoutManager);
 
-        weightSwitchGraph = view.findViewById(R.id.weightSwitchButton);
-        bodyFatSwitchGraph = view.findViewById(R.id.bodyFatSwitchButton);
-
         welcomeUserText.setText("Welcome " + firstName +"!");
         lastDate.setText("From " + getLastDate);
 
@@ -74,8 +73,8 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        progressCards.add(new ProgressData( "Current Weight","155lbs", "Goal Weight", "170lbs", "Starting Weight: 135lbs", "(+15lbs)", "Weight", 10));
-        progressCards.add(new ProgressData( "Current Body Fat","25%", "Goal Body Fat", "13%", "Starting Body Fat: 30%", "(-12%)", "Body Fat", 10));
+        progressCards.add(new ProgressData( "Current Weight","155lbs", "Goal Weight", "170lbs", "Starting Weight: 135lbs", "(+15lbs)", "Weight"));
+        progressCards.add(new ProgressData( "Current Body Fat","25%", "Goal Body Fat", "13%", "Starting Body Fat: 30%", "(-12%)", "Body Fat"));
 
         ProgressAdapter adapter = new ProgressAdapter(progressCards, HomeFragment.this);
         progressCardView.setAdapter(adapter);
@@ -85,62 +84,56 @@ public class HomeFragment extends Fragment {
 //        weightProgressBar.setProgressTintList(ColorStateList.valueOf(Color.rgb(162,210,223)));
 //        bodyFatProgressBar.setProgressTintList(ColorStateList.valueOf(Color.rgb(162,210,223)));
 
-        graphWeight = (GraphView) view.findViewById(R.id.weightGraph);
-        graphBodyFat = (GraphView) view.findViewById(R.id.bodyFatGraph);
+        graph = (GraphView) view.findViewById(R.id.trendGraph);
+        switchGraph = view.findViewById(R.id.switchButton);
+
         weightSeries = new LineGraphSeries<>(getDataPointWeight());
         bodyFatSeries = new LineGraphSeries<>(getDataPointBodyFat());
 
-        graphWeight.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
-        graphWeight.getViewport().setDrawBorder(true);
+        graph.setTitle("Weight Trend");
+        graph.addSeries(weightSeries);
+
+        graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
+        graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.VERTICAL);
+        graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
+        graph.getViewport().setYAxisBoundsManual(true);
+        renderer = graph.getGridLabelRenderer();
+        renderer.setHorizontalAxisTitle("        "+"Mar 23, 2023" + "                                                               " + "Apr 25, 2023");
+
         weightSeries.setColor(Color.rgb(95,158,160));
+        bodyFatSeries.setColor(Color.rgb(95,158,160));
+
         weightSeries.setDrawBackground(true);
         weightSeries.setBackgroundColor(Color.argb(50, 72,209,204));
-        weightSeries.setDrawDataPoints(true);
-        weightSeries.setDataPointsRadius(5);
-        graphWeight.getViewport().setYAxisBoundsManual(true);
-        graphWeight.getViewport().setMinY(weightSeries.getLowestValueY());
-        graphWeight.getViewport().setMaxY(weightSeries.getHighestValueY());
-        graphWeight.setTitle("Weight");
-        graphWeight.addSeries(weightSeries);
-
-        if (weightDP.length < 5) {
-            graphWeight.getGridLabelRenderer().setNumHorizontalLabels(weightDP.length); // only 4 because of the space
-        }
-
-        graphBodyFat.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.NONE);
-        graphBodyFat.getViewport().setDrawBorder(true);
-        bodyFatSeries.setColor(Color.rgb(95,158,160));
         bodyFatSeries.setDrawBackground(true);
         bodyFatSeries.setBackgroundColor(Color.argb(50, 72,209,204));
+
+        weightSeries.setDrawDataPoints(true);
+        weightSeries.setDataPointsRadius(5);
         bodyFatSeries.setDrawDataPoints(true);
         bodyFatSeries.setDataPointsRadius(5);
-        graphBodyFat.getViewport().setYAxisBoundsManual(true);
-        graphBodyFat.getViewport().setMinY(bodyFatSeries.getLowestValueY());
-        graphBodyFat.getViewport().setMaxY(bodyFatSeries.getHighestValueY());
-        graphBodyFat.setTitle("Body Fat");
-        graphBodyFat.addSeries(bodyFatSeries);
-
-        if (bodyFatDP.length < 5) {
-            graphBodyFat.getGridLabelRenderer().setNumHorizontalLabels(bodyFatDP.length); // only 4 because of the space
-        }
-
-        weightSwitchGraph.setOnClickListener(new View.OnClickListener() {
+        switchGraph.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                graphWeight.setVisibility(View.GONE);
-                graphBodyFat.setVisibility(View.VISIBLE);
-                weightSwitchGraph.setVisibility(View.GONE);
-                bodyFatSwitchGraph.setVisibility(View.VISIBLE);
-            }
-        });
+                if (clicked){
+                    graph.removeAllSeries();
+                    graph.addSeries(weightSeries);
+                    graph.getViewport().setMinY(weightSeries.getLowestValueY() - 5);
+                    graph.getViewport().setMaxY(weightSeries.getHighestValueY() + 5);
+                    graph.setTitle("Weight Trend");
+                    switchGraph.setText("Weight");
+                    clicked = false;
+                }
 
-        bodyFatSwitchGraph.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                graphBodyFat.setVisibility(View.GONE);
-                graphWeight.setVisibility(View.VISIBLE);
-                bodyFatSwitchGraph.setVisibility(View.GONE);
-                weightSwitchGraph.setVisibility(View.VISIBLE);
+                else{
+                    graph.removeAllSeries();
+                    graph.addSeries(bodyFatSeries);
+                    graph.getViewport().setMinY(bodyFatSeries.getLowestValueY() - 2);
+                    graph.getViewport().setMaxY(bodyFatSeries.getHighestValueY() + 2);
+                    graph.setTitle("Body Fat Trend");
+                    switchGraph.setText("Body Fat");
+                    clicked = true;
+                }
             }
         });
 
