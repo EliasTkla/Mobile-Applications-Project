@@ -81,7 +81,7 @@
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="90dp"
+            android:layout_marginTop="91dp"
             android:background="@android:color/white" />
 
         <TextView
@@ -101,7 +101,6 @@
             android:layout_height="7dp"
             android:layout_gravity="bottom"
             android:layout_marginBottom="-2dp"
-            android:progress="10"
             android:scaleY="3" />
     </androidx.cardview.widget.CardView>
 </LinearLayout>
