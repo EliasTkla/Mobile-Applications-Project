@@ -12,7 +12,7 @@
         android:gravity="center"
         android:paddingTop="20dp"
         android:text="@string/fitlife"
-        android:textColor="@color/teal_700"
+        android:textColor="@color/teal"
         android:textSize="60sp" />
 
     <TextView
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:text="@string/start_your_exercise_journey_today"
-        android:textColor="@color/teal_700"
+        android:textColor="@color/grey"
         android:textSize="20sp" />
 
     <TextView
@@ -32,15 +32,6 @@
         android:text=""
         android:textSize="15sp"
         android:textColor="@color/red"/>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
-        android:gravity="center"
-        android:text="Personal Information"
-        android:textSize="18sp" />
 
     <LinearLayout
         android:id="@+id/personal_info"
@@ -124,8 +115,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
+            android:layout_marginBottom="10dp"
             android:background="@drawable/custom_button"
-            android:backgroundTint="@color/teal_700"
+            android:backgroundTint="@color/light_teal"
             android:text="@string/next"
             android:textColor="#000000"
             tools:ignore="TextContrastCheck" />
@@ -277,7 +269,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="50dp"
             android:background="@drawable/custom_button"
-            android:backgroundTint="@color/teal_700"
+            android:backgroundTint="@color/light_teal"
             android:text="@string/register"
             android:textColor="#000000"
             tools:ignore="TextContrastCheck" />
@@ -289,7 +281,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="15dp"
-        android:text="@string/already_registered" />
+        android:text="@string/already_registered"
+        android:textColor="@color/silver"/>
 
     <TextView
         android:id="@+id/to_login_btn"
@@ -299,5 +292,5 @@
         android:layout_marginTop="0dp"
         android:gravity="center"
         android:text="@string/login"
-        android:textColor="@color/teal_700" />
+        android:textColor="@color/teal" />
 </LinearLayout>

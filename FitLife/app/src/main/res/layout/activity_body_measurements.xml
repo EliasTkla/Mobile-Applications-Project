@@ -6,10 +6,19 @@
     android:orientation="vertical"
     tools:context=".BodyMeasurementsActivity">
 
+    <Button
+        android:id="@+id/back_home_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/ic_arrow_back_ios_24"
+        android:contentDescription="@string/back_button"
+        style="?android:attr/buttonBarButtonStyle" />
+
     <LinearLayout
         android:id="@+id/personal_info"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <TextView
@@ -24,41 +33,53 @@
         <EditText
             android:id="@+id/updateWeight"
             android:layout_width="300dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_gravity="center"
-            android:layout_marginTop="10dp"
-            android:hint="Weight"
-            android:minHeight="48dp"
-            android:textSize="15sp"
-            android:autofillHints=""
-            android:inputType="numberDecimal" />
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="10dp"
+            android:autofillHints="weight"
+            android:background="@drawable/custom_input"
+            android:drawableStart="@drawable/ic_scale"
+            android:drawablePadding="10dp"
+            android:hint="@string/weight_lbs"
+            android:inputType="numberDecimal"
+            android:paddingStart="15dp"
+            android:paddingEnd="10dp"
+            android:textSize="15sp" />
 
         <EditText
             android:id="@+id/updateBodyFat"
             android:layout_width="300dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
-            android:hint="Body Fat %"
-            android:minHeight="48dp"
-            android:textSize="15sp"
+            android:layout_marginEnd="10dp"
+            android:autofillHints="weight"
+            android:background="@drawable/custom_input"
+            android:drawableStart="@drawable/ic_percent"
+            android:drawablePadding="10dp"
+            android:hint="Body Fat"
             android:inputType="numberDecimal"
-            android:autofillHints="" />
+            android:paddingStart="15dp"
+            android:paddingEnd="10dp"
+            android:textSize="15sp" />
 
         <EditText
             android:id="@+id/updateDate"
             android:layout_width="300dp"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:autofillHints="weight"
+            android:background="@drawable/custom_input"
+            android:drawableStart="@drawable/ic_calendar"
+            android:drawablePadding="10dp"
             android:hint="Date"
-            android:minHeight="48dp"
-            android:textSize="15sp"
-            android:clickable="false"
-            android:cursorVisible="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:autofillHints="" />
+            android:inputType="date"
+            android:paddingStart="15dp"
+            android:paddingEnd="10dp"
+            android:textSize="15sp" />
 
         <Button
             android:id="@+id/addBtn"
@@ -66,9 +87,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="50dp"
-            android:backgroundTint="@color/teal_700"
-            android:text="Add"
-            android:textColor="#000000"
-            tools:ignore="TextContrastCheck" />
+            android:backgroundTint="@color/light_teal"
+            android:background="@drawable/custom_button"
+            android:text="Add"/>
     </LinearLayout>
 </LinearLayout>

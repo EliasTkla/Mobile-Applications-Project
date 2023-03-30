@@ -38,7 +38,8 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
     public void onBindViewHolder(@NonNull RoutineViewHolder holder, int position) {
         RoutineData dataList = routineData.get(position);
         holder.titleView.setText(dataList.getTitle());
-        holder.creatorView.setText(dataList.getCreator());
+        String creator = "By: "+dataList.getCreator();
+        holder.creatorView.setText(creator);
         holder.levelView.setText(dataList.getLevel());
         String freq = dataList.getFrequency()+"x week";
         String length = dataList.getLength()+" weeks long";

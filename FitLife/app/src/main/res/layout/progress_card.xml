@@ -11,8 +11,8 @@
         android:layout_height="100dp"
         android:layout_marginTop="10dp"
         android:layout_gravity="center"
-        app:cardBackgroundColor="@android:color/holo_blue_light"
-        app:cardCornerRadius="7dp">
+        app:cardBackgroundColor="@android:color/holo_blue_dark"
+        app:cardCornerRadius="15dp">
 
         <TextView
             android:id="@+id/currentTitle"
@@ -81,7 +81,7 @@
         <View
             android:layout_width="fill_parent"
             android:layout_height="1dp"
-            android:layout_marginTop="91dp"
+            android:layout_marginTop="90dp"
             android:background="@android:color/white" />
 
         <TextView
@@ -101,6 +101,7 @@
             android:layout_height="7dp"
             android:layout_gravity="bottom"
             android:layout_marginBottom="-2dp"
+            android:progress="10"
             android:scaleY="3" />
     </androidx.cardview.widget.CardView>
 </LinearLayout>

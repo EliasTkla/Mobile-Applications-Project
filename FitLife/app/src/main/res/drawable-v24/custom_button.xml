@@ -3,9 +3,9 @@
 
     <item android:state_enabled="true" android:state_focused="true">
         <shape android:shape="rectangle">
-            <solid android:color="@color/teal_700"/>
+            <solid android:color="@color/silver"/>
             <corners android:radius="30dp"/>
-            <stroke android:color="@color/teal_700" android:width="1dp"/>
+            <stroke android:color="@color/silver" android:width="1dp"/>
         </shape>
     </item>
 
@@ -13,6 +13,7 @@
         <shape android:shape="rectangle">
             <solid android:color="@color/silver"/>
             <corners android:radius="30dp"/>
+            <stroke android:color="@color/light_teal" android:width="1dp"/>
         </shape>
     </item>
 </selector>

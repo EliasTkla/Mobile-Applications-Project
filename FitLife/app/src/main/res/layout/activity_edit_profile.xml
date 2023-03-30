@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/profile_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".EditProfileActivity">
+
+    <Button
+        android:id="@+id/back_profile_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="10dp"
+        android:background="@drawable/ic_arrow_back_ios_24"
+        android:contentDescription="@string/back_button"
+        style="?android:attr/buttonBarButtonStyle" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="Edit"
+        android:textSize="25sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="80dp"
+        android:padding="30dp">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/profile_image"
+            android:background="@color/light_teal"
+            android:contentDescription="TODO" />
+
+        <EditText
+            android:id="@+id/nameEditText"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:hint="Name"
+            android:autofillHints="name" />
+
+        <EditText
+            android:id="@+id/weightEditText"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:hint="Weight"
+            android:autofillHints="weight"
+            android:inputType="numberDecimal" />
+
+        <EditText
+            android:id="@+id/heightEditText"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:hint="Height"
+            android:autofillHints="height"
+            android:inputType="numberDecimal" />
+
+        <EditText
+            android:id="@+id/ageEditText"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:hint="Age"
+            android:autofillHints="age"
+            android:inputType="number" />
+
+        <LinearLayout
+            android:layout_width="340dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:layout_marginTop="50dp">
+
+            <Button
+                android:id="@+id/cameraButton"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/light_teal"
+                android:background="@drawable/custom_button"
+                android:layout_marginEnd="20dp"
+                android:text="Camera"
+                style="?android:attr/buttonBarButtonStyle" />
+
+            <Button
+                android:id="@+id/uploadButton"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/light_teal"
+                android:background="@drawable/custom_button"
+                android:layout_marginEnd="20dp"
+                android:text="Upload"
+                style="?android:attr/buttonBarButtonStyle" />
+
+            <Button
+                android:id="@+id/saveButton"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/light_teal"
+                android:background="@drawable/custom_button"
+                android:text="Save"
+                style="?android:attr/buttonBarButtonStyle" />
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

@@ -24,7 +24,6 @@ public class SQLiteManager extends SQLiteOpenHelper {
     }
 
     //onCreate will create all of our necessary tables
-
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         //TODO Add any required details for user's weight and height <- possibly for Elias or Supreyo to do
@@ -122,7 +121,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
     public boolean addUser(UserData user) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        ContentValues values1 = new ContentValues();
+
         values.put("USER_FNAME", user.getFname());
         values.put("USER_LNAME", user.getLname());
         values.put("USER_EMAIL", user.getEmail());
@@ -144,7 +143,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
     public ArrayList<String> getUserGoals(int userID){
         ArrayList<String> goals = null;
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM USER_RECORDS WHERE USER_ID = ?", new String[]{String.valueOf(userID)});
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM USER_GOALS WHERE USER_ID = ?", new String[]{String.valueOf(userID)});
 
         if(cursor.moveToFirst()){
             Double wGoal = cursor.getDouble(2);
@@ -202,7 +201,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
     }
 
     //Saved Workouts DB Helper Methods
-    public boolean addRoutines(RoutineData routine) {
+    public void addRoutines(RoutineData routine) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -227,13 +226,27 @@ public class SQLiteManager extends SQLiteOpenHelper {
         }
 
         sqLiteDatabase.close();
-        return false;
+    }
+
+    public void deleteRoutine(int routineID) {
+        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
+
+        long status = sqLiteDatabase.delete("ROUTINES", "ROUTINE_ID = ?", new String[]{String.valueOf(routineID)});
+        long status1 = sqLiteDatabase.delete("WORKOUTS", "ROUTINE_ID = ?", new String[]{String.valueOf(routineID)});
+        long status2 = sqLiteDatabase.delete("USER_ROUTINES", "ROUTINE_ID = ?", new String[]{String.valueOf(routineID)});
+
+        if(status != -1 && status1 != -1 && status2!= -1){
+            Toast.makeText(context.getApplicationContext(), "Routine deleted!", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(context.getApplicationContext(), "Unable to delete Routine!", Toast.LENGTH_LONG).show();
+        }
     }
 
     public ArrayList<RoutineData> getRoutines() {
         ArrayList<RoutineData> routines = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM ROUTINES", null);
+
 
         if (cursor.moveToFirst()) {
             do {
@@ -247,19 +260,15 @@ public class SQLiteManager extends SQLiteOpenHelper {
                 Cursor workoutCursor = sqLiteDatabase.rawQuery("SELECT * FROM WORKOUTS WHERE ROUTINE_ID = ?", new String[]{String.valueOf(rID)});
                 ArrayList<WorkoutData> workouts = new ArrayList<>();
 
-                if (workoutCursor.getCount() >= 1 && workoutCursor.moveToFirst()) {
+                if(workoutCursor.moveToFirst()){
                     do {
                         workouts.add(new WorkoutData(workoutCursor.getInt(0), workoutCursor.getString(1), workoutCursor.getString(2), workoutCursor.getInt(3), workoutCursor.getInt(4), workoutCursor.getInt(5)));
-                    } while (workoutCursor.moveToNext());
-                } else {
-                    workouts = null;
+                    }while (workoutCursor.moveToNext());
                 }
                 workoutCursor.close();
 
                 routines.add(new RoutineData(rID, name, creator, level, frequency, length, workouts));
             } while (cursor.moveToNext());
-        } else {
-            Toast.makeText(context.getApplicationContext(), "No routines available!", Toast.LENGTH_LONG).show();
         }
 
         cursor.close();
@@ -290,7 +299,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
         return false;
     }
 
-    public RoutineData getRoutine(int routineID) {
+    public RoutineData getRoutine(int routineID){
         RoutineData routine = null;
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM ROUTINES WHERE ROUTINE_ID = ?", new String[]{String.valueOf(routineID)});
@@ -306,10 +315,10 @@ public class SQLiteManager extends SQLiteOpenHelper {
             Cursor workoutCursor = sqLiteDatabase.rawQuery("SELECT * FROM WORKOUTS WHERE ROUTINE_ID = ?", new String[]{String.valueOf(rID)});
             ArrayList<WorkoutData> workouts = new ArrayList<>();
 
-            if (workoutCursor.moveToFirst()) {
+            if(workoutCursor.moveToFirst()){
                 do {
                     workouts.add(new WorkoutData(workoutCursor.getInt(0), workoutCursor.getString(1), workoutCursor.getString(2), workoutCursor.getInt(3), workoutCursor.getInt(4), workoutCursor.getInt(5)));
-                } while (workoutCursor.moveToNext());
+                }while (workoutCursor.moveToNext());
             }
             workoutCursor.close();
 
@@ -322,20 +331,6 @@ public class SQLiteManager extends SQLiteOpenHelper {
         sqLiteDatabase.close();
 
         return routine;
-    }
-
-    public void deleteRoutine(int routineID) {
-        SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-
-        long status = sqLiteDatabase.delete("ROUTINES", "ROUTINE_ID = ?", new String[]{String.valueOf(routineID)});
-        long status1 = sqLiteDatabase.delete("WORKOUTS", "ROUTINE_ID = ?", new String[]{String.valueOf(routineID)});
-        long status2 = sqLiteDatabase.delete("USER_ROUTINES", "ROUTINE_ID = ?", new String[]{String.valueOf(routineID)});
-
-        if(status != -1 && status1 != -1 && status2!= -1){
-            Toast.makeText(context.getApplicationContext(), "Routine deleted!", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(context.getApplicationContext(), "Unable to delete Routine!", Toast.LENGTH_LONG).show();
-        }
     }
 
     //called when entering the saved routines view, gets all the user's created routines and their saved routines
@@ -378,25 +373,12 @@ public class SQLiteManager extends SQLiteOpenHelper {
                 }
                 cursor.close();
             } while (c.moveToNext());
-        } else {
-            //Toast.makeText(context.getApplicationContext(), "No routines available!", Toast.LENGTH_LONG).show();
         }
+
         c.close();
         sqLiteDatabase.close();
 
         return routines;
-    }
-
-    public int getRoutineID(String routineName) {
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        int routineID = 0;
-        Cursor c = sqLiteDatabase.rawQuery("SELECT ROUTINE_ID FROM ROUTINES WHERE ROUTINE_NAME = ?", new String[]{String.valueOf(routineName)});
-        if(c.moveToFirst() && c.getCount() >= 1){
-            do{
-                routineID = c.getInt(0);
-            }while(c.moveToNext());
-        }
-        return routineID;
     }
 
     //Checks if its your created routine, to determine if you can delete it or delete workouts in it
@@ -418,8 +400,38 @@ public class SQLiteManager extends SQLiteOpenHelper {
         return false;
     }
 
-    //Individual Workouts DB Helper Methods
+    public void saveUserRoutine(int userID, int routineID, boolean current){
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
 
+        values.put("USER_ID", userID);
+        values.put("ROUTINE_ID", routineID);
+
+        long status = sqLiteDatabase.insert("USER_ROUTINES", null, values);
+
+        if(status != -1){
+            Toast.makeText(context.getApplicationContext(), "Routine saved!", Toast.LENGTH_LONG).show();
+            Log.w("db", "Saved User Routine with User_ID: " + userID + " and Routine_ID: " + routineID);
+        } else {
+            Toast.makeText(context.getApplicationContext(), "Unable to save Routine!", Toast.LENGTH_LONG).show();
+            Log.w("db", "Unable to save Routine with userID: " + userID + " and Routine_ID: " + routineID);
+        }
+        sqLiteDatabase.close();
+    }
+
+    public int getRoutineID(String routineName) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        int routineID = 0;
+        Cursor c = sqLiteDatabase.rawQuery("SELECT ROUTINE_ID FROM ROUTINES WHERE ROUTINE_NAME = ?", new String[]{String.valueOf(routineName)});
+        if(c.moveToFirst() && c.getCount() >= 1){
+            do{
+                routineID = c.getInt(0);
+            }while(c.moveToNext());
+        }
+        return routineID;
+    }
+
+    //Individual Workouts DB Helper Methods
     public void addWorkout(WorkoutData workout, int routineID) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -433,11 +445,8 @@ public class SQLiteManager extends SQLiteOpenHelper {
 
         if(status != -1){
             Toast.makeText(context.getApplicationContext(), "Workout added!", Toast.LENGTH_LONG).show();
-            Log.w("db", "Added Workout with Routine_ID of: " + routineID);
-
         } else {
             Toast.makeText(context.getApplicationContext(), "Workout not added!", Toast.LENGTH_LONG).show();
-            Log.w("db", "Failed to Add Workout with Routine_ID of: " + routineID);
         }
 
         sqLiteDatabase.close();
@@ -486,22 +495,22 @@ public class SQLiteManager extends SQLiteOpenHelper {
         return resultList;
     }
 
-    public void saveUserRoutine(int userID, int routineID, boolean current){
+    public void saveUserRoutine(int userID, int routineID, int current){
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
         values.put("USER_ID", userID);
         values.put("ROUTINE_ID", routineID);
+        values.put("STATUS", current);
 
         long status = sqLiteDatabase.insert("USER_ROUTINES", null, values);
 
         if(status != -1){
             Toast.makeText(context.getApplicationContext(), "Routine saved!", Toast.LENGTH_LONG).show();
-            Log.w("db", "Saved User Routine with User_ID: " + userID + " and Routine_ID: " + routineID);
         } else {
             Toast.makeText(context.getApplicationContext(), "Unable to save Routine!", Toast.LENGTH_LONG).show();
-            Log.w("db", "Unable to save Routine with userID: " + userID + " and Routine_ID: " + routineID);
         }
+
         sqLiteDatabase.close();
     }
 
@@ -524,9 +533,10 @@ public class SQLiteManager extends SQLiteOpenHelper {
         Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM USER_ROUTINES WHERE USER_ID = ? AND ROUTINE_ID = ?", new String[]{String.valueOf(userID), String.valueOf(routineID)});
 
         if (cursor.moveToFirst()) {
+            cursor.close();
+            sqLiteDatabase.close();
             return true;
         }
-
         cursor.close();
         sqLiteDatabase.close();
 

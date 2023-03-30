@@ -15,16 +15,22 @@
 
     </FrameLayout>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/dark_teal"
+        android:layout_above="@+id/navigation_bar"/>
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navigation_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/dark_teal"
+        android:background="@color/white"
         android:layout_alignParentBottom="true"
         android:paddingBottom="10dp"
         app:menu="@menu/bottom_navbar"
-        app:itemIconTint="@color/white"
-        app:itemTextColor="@color/white">
+        app:itemIconTint="@color/nav_selector"
+        app:itemTextColor="@color/nav_selector">
 
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 </RelativeLayout>

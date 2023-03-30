@@ -182,6 +182,10 @@ public class SavedWorkoutsFragment extends Fragment {
         create_workout_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                routines = db.getUserRoutines(userID);
+                RoutineAdapter adapter = new RoutineAdapter(routines, SavedWorkoutsFragment.this);
+                routine_list.setAdapter(adapter);
+
                 saved_routine.setVisibility(View.VISIBLE);
                 new_workout.setVisibility(View.GONE);
                 saved_routine.invalidate();

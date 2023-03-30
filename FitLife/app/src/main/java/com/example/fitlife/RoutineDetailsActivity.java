@@ -21,8 +21,8 @@ public class RoutineDetailsActivity extends AppCompatActivity {
     TextView title, createdBy, level, frequency, length;
     Button backButton, saveButton, deleteButton;
     RecyclerView workoutsView;
-    boolean saved = false;
-    boolean created = false;
+    boolean saved;
+    boolean created;
     ArrayList<WorkoutData> workouts = new ArrayList<>();
     SQLiteManager sqLiteManager;
 
@@ -55,7 +55,8 @@ public class RoutineDetailsActivity extends AppCompatActivity {
         RoutineData routine = sqLiteManager.getRoutine(id);
 
         title.setText(routine.getTitle());
-        createdBy.setText(routine.getCreator());
+        String create = "By: "+routine.getCreator();
+        createdBy.setText(create);
         level.setText(routine.getLevel());
         String freq = routine.getFrequency()+"x week";
         String len = routine.getLength()+" weeks long";
@@ -75,9 +76,14 @@ public class RoutineDetailsActivity extends AppCompatActivity {
 
         if (saved) {
             saveButton.setBackgroundResource(R.drawable.ic_bookmarked);
-            if (created) {
-                saveButton.setVisibility(View.GONE);
-                deleteButton.setVisibility(View.VISIBLE);
+
+            SavedWorkoutsFragment savedWorkoutsFragment = (SavedWorkoutsFragment) getSupportFragmentManager().findFragmentByTag("saved_page");
+
+            if (savedWorkoutsFragment != null && savedWorkoutsFragment.isVisible()) {
+                if (created) {
+                    saveButton.setVisibility(View.GONE);
+                    deleteButton.setVisibility(View.VISIBLE);
+                }
             }
         } else {
             saveButton.setBackgroundResource(R.drawable.ic_bookmark);

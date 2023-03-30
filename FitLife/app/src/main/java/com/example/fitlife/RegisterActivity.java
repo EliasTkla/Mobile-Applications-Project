@@ -94,7 +94,7 @@ public class RegisterActivity extends AppCompatActivity {
                     boolean registered = sqLiteManager.addUser(user);
 
                     if(!registered){
-                       error_message.setText("Problem registering account");
+                        error_message.setText("Problem registering account");
                     } else {
                         error_message.setText("");
 

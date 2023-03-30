@@ -36,7 +36,7 @@
             android:layout_alignParentEnd="true"
             android:background="@android:drawable/ic_menu_delete"
             android:visibility="gone"
-            android:contentDescription="@string/delete_workout_routine"
+            android:contentDescription="delete workout routine"
             style="?android:attr/buttonBarButtonStyle" />
     </RelativeLayout>
 

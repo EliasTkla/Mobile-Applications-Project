@@ -11,10 +11,9 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/dark_teal"
         android:gravity="center"
-        android:paddingTop="40dp"
-        android:paddingBottom="10dp"
+        android:paddingTop="30dp"
+        android:paddingBottom="15dp"
         android:text="Discover"
         android:textColor="@color/white"
         android:textSize="25sp" />
@@ -22,7 +21,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="90dp"
+        android:layout_marginTop="80dp"
         android:orientation="vertical"
         android:background="@drawable/custom_layout">
 
@@ -63,9 +62,11 @@
                 android:layout_marginStart="5dp"
                 android:paddingEnd="10dp"
                 android:paddingStart="10dp"
+                android:backgroundTint="#D3D3D3"
                 android:background="@drawable/custom_button"
                 android:drawableEnd="@drawable/ic_filter"
                 android:text="Filter"
+                android:textColor="@color/black"
                 android:visibility="visible"/>
 
             <Button
