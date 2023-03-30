@@ -42,7 +42,6 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
         String length = dataList.getLength()+" weeks long";
         holder.frequencyView.setText(freq);
         holder.lengthView.setText(length);
-        ArrayList<WorkoutData> workouts = dataList.getWorkoutsList();
 
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override

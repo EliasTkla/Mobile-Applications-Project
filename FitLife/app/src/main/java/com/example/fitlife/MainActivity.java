@@ -25,7 +25,6 @@ public class MainActivity extends AppCompatActivity {
     SavedWorkoutsFragment savedWorkoutsFragment = new SavedWorkoutsFragment();
     ProfileFragment profileFragment = new ProfileFragment();
     Fragment currentActive;
-
     SQLiteManager sqLiteManager;
 
     @Override
@@ -33,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         sqLiteManager = new SQLiteManager(MainActivity.this);
+
         bottomNavigationView = findViewById(R.id.navigation_bar);
 
         fragmentManager.beginTransaction().add(R.id.page_container, homeFragment).hide(homeFragment).commit();

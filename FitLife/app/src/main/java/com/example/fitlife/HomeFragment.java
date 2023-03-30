@@ -1,6 +1,8 @@
 package com.example.fitlife;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -31,8 +33,10 @@ import java.util.Date;
 public class HomeFragment extends Fragment {
     View view;
     TextView welcomeUserText, lastDate;
-    String firstName = "Supreyo";
-    String getLastDate = "March 22, 2023";
+    String firstName, weight, weightGoal, bodyFat, bodyFatGoal;
+    Calendar calendar = Calendar.getInstance();
+    SimpleDateFormat sdf;
+    String getLastDate;
     FloatingActionButton addNewMeasurements;
     RecyclerView progressCardView;
     ArrayList<ProgressData> progressCards = new ArrayList<>();
@@ -43,24 +47,29 @@ public class HomeFragment extends Fragment {
     Button switchGraph;
     boolean clicked = false;
 
-//    double getCurrentWeight = 165;
-//    double getGoalCurrentWeight = 175;
-//    double getCurrentBodyFat = 25;
-//    double getGoalCurrentBodyFat = 13;
-
 //    ProgressBar weightProgressBar, bodyFatProgressBar;
+
+    SharedPreferences sharedPreferences;
+    SQLiteManager sqLiteManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
-
         welcomeUserText = view.findViewById(R.id.welcomeUser);
         addNewMeasurements = view.findViewById(R.id.recordNewMeasurements);
         lastDate = view.findViewById(R.id.lastDate);
-
         progressCardView = view.findViewById(R.id.progressList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         progressCardView.setLayoutManager(layoutManager);
+
+        sdf = new SimpleDateFormat("EEE, MMM d, yyyy");
+        getLastDate = sdf.format(calendar.getTime());
+
+        sharedPreferences = this.getActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE);
+
+        firstName = sharedPreferences.getString("fname_key", null);
+        weight = sharedPreferences.getString("weight_key", null);
+
 
         welcomeUserText.setText("Welcome " + firstName +"!");
         lastDate.setText("From " + getLastDate);
@@ -73,7 +82,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        progressCards.add(new ProgressData( "Current Weight","155lbs", "Goal Weight", "170lbs", "Starting Weight: 135lbs", "(+15lbs)", "Weight"));
+        progressCards.add(new ProgressData( "Current Weight", String.valueOf(weight), "Goal Weight", "170lbs", "Starting Weight: 135lbs", "(+15lbs)", "Weight"));
         progressCards.add(new ProgressData( "Current Body Fat","25%", "Goal Body Fat", "13%", "Starting Body Fat: 30%", "(-12%)", "Body Fat"));
 
         ProgressAdapter adapter = new ProgressAdapter(progressCards, HomeFragment.this);
@@ -112,6 +121,7 @@ public class HomeFragment extends Fragment {
         weightSeries.setDataPointsRadius(5);
         bodyFatSeries.setDrawDataPoints(true);
         bodyFatSeries.setDataPointsRadius(5);
+
         switchGraph.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -142,27 +152,27 @@ public class HomeFragment extends Fragment {
 
     private DataPoint[] getDataPointWeight(){
         weightDP = new DataPoint[]{
-        new DataPoint(0, 135),
-        new DataPoint(1, 137),
-        new DataPoint(2, 140),
-        new DataPoint(3, 140),
-        new DataPoint(4, 139),
-        new DataPoint(5, 143),
-        new DataPoint(6, 147),
-        new DataPoint(7, 150),
-        new DataPoint(8, 148),
-        new DataPoint(9, 148),
-        new DataPoint(10, 149),
-        new DataPoint(11, 152),
-        new DataPoint(12, 155),
-        new DataPoint(13, 154),
-        new DataPoint(14, 157),
-        new DataPoint(15, 159),
-        new DataPoint(16, 160),
-        new DataPoint(17, 159),
-        new DataPoint(18, 162),
-        new DataPoint(19, 164),
-        new DataPoint(20, 165)
+                new DataPoint(0, 135),
+                new DataPoint(1, 137),
+                new DataPoint(2, 140),
+                new DataPoint(3, 140),
+                new DataPoint(4, 139),
+                new DataPoint(5, 143),
+                new DataPoint(6, 147),
+                new DataPoint(7, 150),
+                new DataPoint(8, 148),
+                new DataPoint(9, 148),
+                new DataPoint(10, 149),
+                new DataPoint(11, 152),
+                new DataPoint(12, 155),
+                new DataPoint(13, 154),
+                new DataPoint(14, 157),
+                new DataPoint(15, 159),
+                new DataPoint(16, 160),
+                new DataPoint(17, 159),
+                new DataPoint(18, 162),
+                new DataPoint(19, 164),
+                new DataPoint(20, 165)
         };
 
         return weightDP;
@@ -170,27 +180,27 @@ public class HomeFragment extends Fragment {
 
     private DataPoint[] getDataPointBodyFat(){
         bodyFatDP = new DataPoint[]{
-        new DataPoint(0, 30),
-        new DataPoint(1, 30),
-        new DataPoint(2, 29),
-        new DataPoint(3, 28),
-        new DataPoint(4, 26),
-        new DataPoint(5, 27),
-        new DataPoint(6, 26),
-        new DataPoint(7, 26),
-        new DataPoint(8, 25),
-        new DataPoint(9, 24),
-        new DataPoint(10, 25),
-        new DataPoint(11, 23),
-        new DataPoint(12, 22),
-        new DataPoint(13, 22),
-        new DataPoint(14, 23),
-        new DataPoint(15, 24),
-        new DataPoint(16, 23),
-        new DataPoint(17, 22),
-        new DataPoint(18, 22),
-        new DataPoint(19, 21),
-        new DataPoint(20, 20)
+                new DataPoint(0, 30),
+                new DataPoint(1, 30),
+                new DataPoint(2, 29),
+                new DataPoint(3, 28),
+                new DataPoint(4, 26),
+                new DataPoint(5, 27),
+                new DataPoint(6, 26),
+                new DataPoint(7, 26),
+                new DataPoint(8, 25),
+                new DataPoint(9, 24),
+                new DataPoint(10, 25),
+                new DataPoint(11, 23),
+                new DataPoint(12, 22),
+                new DataPoint(13, 22),
+                new DataPoint(14, 23),
+                new DataPoint(15, 24),
+                new DataPoint(16, 23),
+                new DataPoint(17, 22),
+                new DataPoint(18, 22),
+                new DataPoint(19, 21),
+                new DataPoint(20, 20)
         };
 
         return bodyFatDP;

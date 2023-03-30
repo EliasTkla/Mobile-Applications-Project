@@ -1,8 +1,6 @@
 package com.example.fitlife;
 
-import java.io.Serializable;
-
-public class WorkoutData implements Serializable {
+public class WorkoutData {
     Integer workoutID;
     String workoutName;
     String workoutDay;

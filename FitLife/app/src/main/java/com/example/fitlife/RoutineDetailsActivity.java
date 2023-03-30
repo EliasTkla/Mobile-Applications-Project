@@ -45,9 +45,9 @@ public class RoutineDetailsActivity extends AppCompatActivity {
         createdBy.setText(routine.getCreator());
         level.setText(routine.getLevel());
         String freq = routine.getFrequency()+"x week";
-        String leng = routine.getLength()+" weeks long";
+        String len = routine.getLength()+" weeks long";
         frequency.setText(freq);
-        length.setText(leng);
+        length.setText(len);
 
         workouts = routine.getWorkoutsList();
 
