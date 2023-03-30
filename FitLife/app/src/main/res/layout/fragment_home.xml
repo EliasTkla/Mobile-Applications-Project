@@ -45,8 +45,10 @@
             android:id="@+id/lastDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="2dp"
             android:gravity="center"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
+            android:textStyle="bold"
             android:textSize="15dp" />
     </FrameLayout>
 
@@ -54,6 +56,7 @@
         android:id="@+id/cardScrollView"
         android:layout_width="match_parent"
         android:layout_height="220dp"
+        android:layout_marginTop="15dp"
         android:layout_below="@+id/date_container">
 
         <androidx.recyclerview.widget.RecyclerView
@@ -68,15 +71,15 @@
         android:layout_width="420dp"
         android:layout_height="2dp"
         android:layout_centerInParent="true"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
         android:layout_below="@+id/cardScrollView"
         android:background="@android:color/darker_gray"/>
 
     <com.jjoe64.graphview.GraphView
         android:id="@+id/trendGraph"
         android:layout_width="match_parent"
-        android:layout_height="170dp"
-        android:layout_marginTop="7dp"
+        android:layout_height="240dp"
+        android:layout_marginTop="10dp"
         android:layout_below="@+id/divider"/>
 
     <Button

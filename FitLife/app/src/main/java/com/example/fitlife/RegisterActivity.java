@@ -12,6 +12,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class RegisterActivity extends AppCompatActivity {
     EditText fname, lname, email, password, weight, weightGoal, bodyFat, bodyFatGoal, height, age;
     Button next_btn, register_btn;
@@ -21,6 +24,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     String firstName, lastName, userEmail, userPassword;
     UserData user;
+
+    String registeredData = new SimpleDateFormat("MMM dd, yyyy").format(Calendar.getInstance().getTime());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,16 +81,17 @@ public class RegisterActivity extends AppCompatActivity {
                     error_message.setText("Please fill in the fields");
                 } else {
                     Double userWeight = Double.valueOf(String.valueOf(weight.getText()));
+                    Double userWeightG = Double.valueOf(String.valueOf(weightGoal.getText()));
+
+                    Double userBodyFat = Double.valueOf(String.valueOf(bodyFat.getText()));
+                    Double userBodyFatG = Double.valueOf(String.valueOf(bodyFatGoal.getText()));
+
                     Double userHeight = Double.valueOf(String.valueOf(height.getText()));
                     Integer userAge = Integer.valueOf(String.valueOf(age.getText()));
 
-                    user = new UserData(firstName, lastName, userEmail, userPassword, userWeight, userHeight, userAge);
+                    user = new UserData(firstName, lastName, userEmail, userPassword, userWeight, userWeightG, userBodyFat, userBodyFatG, userHeight, userAge, registeredData);
 
-                    Double weightG = Double.valueOf(String.valueOf(weightGoal.getText()));
-                    int bodyFt = Integer.parseInt(String.valueOf(bodyFat.getText()));
-                    int bodyFtG = Integer.parseInt(String.valueOf(bodyFatGoal.getText()));
-
-                    boolean registered = sqLiteManager.addUser(user, weightG, bodyFt, bodyFtG);
+                    boolean registered = sqLiteManager.addUser(user);
 
                     if(!registered){
                        error_message.setText("Problem registering account");
