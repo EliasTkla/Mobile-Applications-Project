@@ -19,12 +19,15 @@
         <activity
             android:name=".MainActivity"
             android:exported="false" />
+
+        <activity
+            android:name=".EditProfileFragment"
+            />
+
         <activity
             android:name=".LoginActivity"
-            android:exported="false" />
-        <activity
-            android:name=".RegisterActivity"
-            android:exported="true">
+            android:exported="true" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,10 +38,23 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false"/>
+
         <activity
             android:name=".RoutineDetailsActivity"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
+
+<<<<<<<<< Temporary merge branch 1
+        <activity
+            android:name=".BodyMeasurementsActivity"
+            android:exported="false"
+            android:parentActivityName=".MainActivity" />
+=========
+>>>>>>>>> Temporary merge branch 2
     </application>
 
 </manifest>

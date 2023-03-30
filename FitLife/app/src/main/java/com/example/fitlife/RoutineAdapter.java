@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.Serializable;
@@ -16,10 +17,12 @@ import java.util.ArrayList;
 
 public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineViewHolder> {
     ArrayList<RoutineData> routineData;
-    DiscoverFragment context;
+    Fragment context;
     View view;
 
-    public RoutineAdapter(ArrayList<RoutineData> data, DiscoverFragment context){
+    boolean createdFlag;
+
+    public RoutineAdapter(ArrayList<RoutineData> data, Fragment context){
         this.routineData = data;
         this.context = context;
     }
@@ -76,4 +79,3 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
         }
     }
 }
-
