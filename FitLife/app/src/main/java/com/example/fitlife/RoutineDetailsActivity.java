@@ -3,15 +3,12 @@ package com.example.fitlife;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,10 +16,9 @@ import java.util.ArrayList;
 
 public class RoutineDetailsActivity extends AppCompatActivity {
     TextView title, createdBy, level, frequency, length;
-    Button backButton, saveButton, deleteButton;
+    Button backButton, saveButton;
     RecyclerView workoutsView;
     boolean saved = false;
-    boolean created = false;
     ArrayList<WorkoutData> workouts = new ArrayList<>();
     SQLiteManager sqLiteManager;
 
@@ -39,15 +35,11 @@ public class RoutineDetailsActivity extends AppCompatActivity {
         length = findViewById(R.id.program_length);
         backButton = findViewById(R.id.back_button);
         saveButton = findViewById(R.id.save_routine_button);
-        deleteButton = findViewById(R.id.delete_routine_button);
         sqLiteManager = new SQLiteManager(getApplicationContext());
-
-        FragmentManager fragmentManager = this.getSupportFragmentManager();
 
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("user_info", Context.MODE_PRIVATE);
         int userID = Integer.parseInt(sharedPreferences.getString("user_id", null));
 
-        Log.w("db", "userID = " + userID);
         Intent details = getIntent();
 
         int id = details.getIntExtra("routine id", 0);
@@ -67,35 +59,11 @@ public class RoutineDetailsActivity extends AppCompatActivity {
         WorkoutsAdapter adapter = new WorkoutsAdapter(workouts, RoutineDetailsActivity.this);
         workoutsView.setAdapter(adapter);
 
-        String user_name = sharedPreferences.getString("fname_key", null) + " " + sharedPreferences.getString("lname_key", null);
-
-
-        saved = sqLiteManager.isRoutineSaved(userID, routine.getId());
-        created = sqLiteManager.isRoutineCreated(routine, user_name);
-
-        if (saved) {
-            saveButton.setBackgroundResource(R.drawable.ic_bookmarked);
-            if (created) {
-                saveButton.setVisibility(View.GONE);
-                deleteButton.setVisibility(View.VISIBLE);
-            }
-        } else {
-            saveButton.setBackgroundResource(R.drawable.ic_bookmark);
-        }
+        sqLiteManager.isRoutineSaved(routine.getId(), routine.getId());
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
-            }
-        });
-
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                sqLiteManager.deleteRoutine(id);
-//                SavedWorkoutsFragment savedWorkoutsFragment = new SavedWorkoutsFragment();
-//                savedWorkoutsFragment.reloadData(sqLiteManager, userID);
                 finish();
             }
         });

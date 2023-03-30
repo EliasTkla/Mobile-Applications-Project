@@ -132,9 +132,9 @@ public class SavedWorkoutsFragment extends Fragment {
                 db.addUserRoutines(createdRoutineID, userID);
                 routines = db.getUserRoutines(userID);
                 new_routine.setVisibility(View.GONE);
-                new_workout.setVisibility(View.VISIBLE);
+                created_routine.setVisibility(View.VISIBLE);
                 new_routine.invalidate();
-                new_workout.invalidate();
+                created_routine.invalidate();
             }
         });
 
@@ -162,10 +162,10 @@ public class SavedWorkoutsFragment extends Fragment {
                 db.addWorkout(workoutData, createdRoutineID);
                 routines = db.getUserRoutines(userID);
 
-                set_Workout.getText().clear();
-                set_day.getText().clear();
-                set_reps.getText().clear();
-                set_Sets.getText().clear();
+                created_routine.setVisibility(View.VISIBLE);
+                new_workout.setVisibility(View.GONE);
+                created_routine.invalidate();
+                new_workout.invalidate();
             }
         });
 
@@ -182,9 +182,9 @@ public class SavedWorkoutsFragment extends Fragment {
         create_workout_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                saved_routine.setVisibility(View.VISIBLE);
                 new_workout.setVisibility(View.GONE);
-                saved_routine.invalidate();
+                created_routine.setVisibility(View.VISIBLE);
+                created_routine.invalidate();
                 new_workout.invalidate();
             }
         });
@@ -199,12 +199,5 @@ public class SavedWorkoutsFragment extends Fragment {
             }
         });
         return view;
-    }
-
-    public void reloadData(SQLiteManager db, int userID) {
-        routines = db.getUserRoutines(userID);
-
-        RoutineAdapter adapter = new RoutineAdapter(routines, SavedWorkoutsFragment.this);
-        routine_list.setAdapter(adapter);
     }
 }

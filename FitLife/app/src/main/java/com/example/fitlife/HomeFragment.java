@@ -1,13 +1,9 @@
 package com.example.fitlife;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +11,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,13 +23,10 @@ import com.jjoe64.graphview.helper.DateAsXAxisLabelFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 public class HomeFragment extends Fragment {
     View view;
@@ -45,29 +37,27 @@ public class HomeFragment extends Fragment {
     GraphView graph;
     LineGraphSeries<DataPoint> weightSeries, bodyFatSeries;
     DataPoint[] getWeightDP, getBodyFatDP;
-    DataPoint[] getPopulatedWeightDP, getPopulatedBodyFatDP;
     GridLabelRenderer renderer;
     Button switchGraph;
     boolean clicked = false;
 
-    String getFirstName;
-    String getFirstDate;
-    String getLastDate;
+    String getFirstName = "Supreyo";
+    String getFirstDate = "Mar 23, 2023";
+    String getLastDate = "Apr 25, 2023";
 
-    double getStartingWeight;
-    double getCurrentWeight;
-    double getGoalWeight;
+    double getCurrentWeight = 170;
+    double getGoalWeight = 205;
+    double getStartingWeight = 120;
 
-    double getStartingBodyFat;
     double getCurrentBodyFat = 23;
-    double getGoalBodyFat;
+    double getGoalBodyFat = 15;
+    double getStartingBodyFat = 30;
 
-    double weightDifference, bodyFatDifference;
+    double weightDifference = getGoalWeight - getCurrentWeight;
+    double bodyFatDifference = getGoalBodyFat - getCurrentBodyFat;
     String weightDifferenceOutput, bodyFatDifferenceOutput;
 
-    SQLiteManager db;
-    Cursor cursor;
-    String dataStore;
+    SQLiteManager sqLiteManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -81,40 +71,8 @@ public class HomeFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         progressCardView.setLayoutManager(layoutManager);
 
-        db = new SQLiteManager(getActivity());
-
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE);
-        int userID = Integer.parseInt(sharedPreferences.getString("user_id", null));
-
-        getFirstName = sharedPreferences.getString("fname_key", null);
-
-        getStartingWeight = Double.parseDouble(sharedPreferences.getString("weight_key", null));
-        getGoalWeight = Double.parseDouble(sharedPreferences.getString("weightG_key", null));
-
-        getStartingBodyFat = Double.parseDouble(sharedPreferences.getString("bodyFat_key", null));
-        getGoalBodyFat = Double.parseDouble(sharedPreferences.getString("bodyFatG_key", null));
-
-        cursor = db.displayUserRecords(userID);
-        cursor.moveToLast();
-
-        getCurrentWeight = Double.parseDouble(cursor.getString(0));
-        getCurrentBodyFat = Double.parseDouble(cursor.getString(1));
-        getLastDate = cursor.getString(2);
-
-        getFirstDate = sharedPreferences.getString("register_date", null);
-        SimpleDateFormat inputFormat = new SimpleDateFormat("MMM dd, yyyy");
-        SimpleDateFormat outputFormat = new SimpleDateFormat("MMMM dd, yyyy");
-
-        Calendar c = Calendar.getInstance();
-        try {
-            c.setTime(inputFormat.parse(getLastDate));
-            outputFormat.format(c.getTime());
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-
         welcomeUserText.setText("Welcome " + getFirstName +"!");
-        lastDate.setText("From " + outputFormat.format(c.getTime()));
+        lastDate.setText("From " + getLastDate);
 
         addNewMeasurements.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,11 +82,9 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        weightDifference = getGoalWeight - getCurrentWeight;
         weightDifference = Math.round(weightDifference * 100);
         weightDifference = weightDifference/100;
 
-        bodyFatDifference = getGoalBodyFat - getCurrentBodyFat;
         bodyFatDifference = Math.round(bodyFatDifference * 100);
         bodyFatDifference = bodyFatDifference/100;
 
@@ -138,6 +94,7 @@ public class HomeFragment extends Fragment {
 
         else{
             weightDifferenceOutput = "+" + Double.toString(weightDifference);
+
         }
 
         if (bodyFatDifference < 0){
@@ -154,26 +111,11 @@ public class HomeFragment extends Fragment {
         ProgressAdapter adapter = new ProgressAdapter(progressCards, HomeFragment.this);
         progressCardView.setAdapter(adapter);
 
-        getWeightDP = new DataPoint[db.getUserRecords(userID, 0).size()];
-        getBodyFatDP = new DataPoint[db.getUserRecords(userID, 1).size()];
-
-        for (int i = 0; i < db.getUserRecords(userID, 0).size(); i++){
-            int x = i;
-            Double y = db.getUserRecords(userID, 0).get(i);
-            getWeightDP[i] = new DataPoint(x,y);
-        }
-
-        for (int i = 0; i < db.getUserRecords(userID, 1).size(); i++){
-            int x = i;
-            Double y = db.getUserRecords(userID, 1).get(i);
-            getBodyFatDP[i] = new DataPoint(x,y);
-        }
-
         graph = (GraphView) view.findViewById(R.id.trendGraph);
         switchGraph = view.findViewById(R.id.switchButton);
 
-        weightSeries = new LineGraphSeries<>(getWeightDP);
-        bodyFatSeries = new LineGraphSeries<>(getBodyFatDP);
+        weightSeries = new LineGraphSeries<>(getDataPointWeight());
+        bodyFatSeries = new LineGraphSeries<>(getDataPointBodyFat());
 
         graph.setTitle("Weight Trend");
         graph.addSeries(weightSeries);
@@ -226,7 +168,7 @@ public class HomeFragment extends Fragment {
     }
 
     private DataPoint[] getDataPointWeight(){
-        getPopulatedWeightDP = new DataPoint[]{
+        getWeightDP = new DataPoint[]{
         new DataPoint(0, 135),
         new DataPoint(1, 137),
         new DataPoint(2, 140),
@@ -250,11 +192,11 @@ public class HomeFragment extends Fragment {
         new DataPoint(20, 165)
         };
 
-        return getPopulatedWeightDP;
+        return getWeightDP;
     }
 
     private DataPoint[] getDataPointBodyFat(){
-        getPopulatedBodyFatDP = new DataPoint[]{
+        getBodyFatDP = new DataPoint[]{
         new DataPoint(0, 30),
         new DataPoint(1, 30),
         new DataPoint(2, 29),
@@ -278,6 +220,6 @@ public class HomeFragment extends Fragment {
         new DataPoint(20, 20)
         };
 
-        return getPopulatedBodyFatDP;
+        return getBodyFatDP;
     }
 }

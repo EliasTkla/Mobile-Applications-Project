@@ -24,7 +24,6 @@ public class SQLiteManager extends SQLiteOpenHelper {
     }
 
     //onCreate will create all of our necessary tables
-
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         //TODO Add any required details for user's weight and height <- possibly for Elias or Supreyo to do
@@ -35,12 +34,8 @@ public class SQLiteManager extends SQLiteOpenHelper {
                 "USER_EMAIL TEXT UNIQUE NOT NULL, " +
                 "USER_PASSWORD TEXT NOT NULL, " +
                 "USER_WEIGHT DECIMAL(3,2), " +
-                "USER_WEIGHT_GOAL DECIMAL(3,2)," +
-                "USER_BODY_FAT DECIMAL(2,2)," +
-                "USER_BODY_FAT_GOAL DECIMAL(2,2)," +
                 "USER_HEIGHT DECIMAL(3,2), " +
-                "USER_AGE INTEGER," +
-                "USER_REGISTER_DATE TEXT)";
+                "USER_AGE INTEGER)";
 
         String createRoutinesTable = "CREATE TABLE ROUTINES " +
                 "(ROUTINE_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -67,18 +62,21 @@ public class SQLiteManager extends SQLiteOpenHelper {
                 "FOREIGN KEY(USER_ID) REFERENCES USERS(USER_ID), " +
                 "FOREIGN KEY(ROUTINE_ID) REFERENCES ROUTINES(ROUTINE_ID))";
 
-        String createUserGoalRecords = "CREATE TABLE USER_RECORDS " +
-                "(USER_CURRENT_WEIGHT DECIMAL(3,2), " +
-                "USER_CURRENT_BODY_FAT DECIMAL(2,2), " +
-                "USER_CURRENT_DATE TEXT," +
+        String createUserGoalsTable = "CREATE TABLE USER_GOALS " +
+                "(USER_GOALS_ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                "USER_WEIGHT DECIMAL(3,2), " +
+                "WEIGHT_GOAL DECIMAL(3,2), " +
+                "BODY_FAT INTEGER, " +
+                "BODY_FAT_GOAL INTEGER, " +
                 "USER_ID INTEGER, " +
+                "FOREIGN KEY(USER_WEIGHT) REFERENCES USERS(USER_WEIGHT), " +
                 "FOREIGN KEY(USER_ID) REFERENCES USERS(USER_ID))";
 
         sqLiteDatabase.execSQL(createUsersTable);
         sqLiteDatabase.execSQL(createRoutinesTable);
         sqLiteDatabase.execSQL(createWorkoutsTable);
         sqLiteDatabase.execSQL(createUserRoutinesTable);
-        sqLiteDatabase.execSQL(createUserGoalRecords);
+        sqLiteDatabase.execSQL(createUserGoalsTable);
 
         populateRoutines(sqLiteDatabase);
     }
@@ -94,6 +92,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
         Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM USERS WHERE USER_EMAIL = ? AND USER_PASSWORD = ?", new String[]{email, password});
 
+
         if(cursor.moveToFirst()){
             UserData user;
             String firstName = cursor.getString(1);
@@ -101,14 +100,10 @@ public class SQLiteManager extends SQLiteOpenHelper {
             String userEmail = cursor.getString(3);
             String userPassword = cursor.getString(4);
             Double weight = cursor.getDouble(5);
-            Double weightG = cursor.getDouble(6);
-            Double bodyFat = cursor.getDouble(7);
-            Double bodyFatG = cursor.getDouble(8);
-            Double height = cursor.getDouble(9);
-            Integer age = cursor.getInt(10);
-            String registerDate = cursor.getString(11);
+            Double height = cursor.getDouble(6);
+            Integer age = cursor.getInt(7);
 
-            user = new UserData(firstName, lastName, userEmail, userPassword, weight, weightG, bodyFat, bodyFatG, height, age, registerDate);
+            user = new UserData(firstName, lastName, userEmail, userPassword, weight, height, age);
             user.setUserId(cursor.getInt(0));
             return user;
         }
@@ -119,32 +114,51 @@ public class SQLiteManager extends SQLiteOpenHelper {
         return null;
     }
 
-    public boolean addUser(UserData user) {
+    public boolean addUser(UserData user, Double weightGoal, int bodyFat, int bodyFatGoal) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         ContentValues values1 = new ContentValues();
+
         values.put("USER_FNAME", user.getFname());
         values.put("USER_LNAME", user.getLname());
         values.put("USER_EMAIL", user.getEmail());
         values.put("USER_PASSWORD", user.getPassword());
         values.put("USER_WEIGHT", user.getWeight());
-        values.put("USER_WEIGHT_GOAL", user.getWeightG());
-        values.put("USER_BODY_FAT", user.getBodyFat());
-        values.put("USER_BODY_FAT_GOAL", user.getBodyFatG());
         values.put("USER_HEIGHT", user.getHeight());
         values.put("USER_AGE", user.getAge());
-        values.put("USER_REGISTER_DATE", user.getRegisteredDate());
 
         long status = sqLiteDatabase.insert("USERS", null, values);
 
+        if(status != -1){
+            Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM USERS WHERE USER_EMAIL = ?", new String[]{user.getEmail()});
+
+            if (cursor.moveToFirst()) {
+                values1.put("USER_WEIGHT", user.getWeight());
+                values1.put("WEIGHT_GOAL", weightGoal);
+                values1.put("BODY_FAT", bodyFat);
+                values1.put("BODY_FAT_GOAL", bodyFatGoal);
+                values1.put("USER_ID", cursor.getInt(0));
+
+                long status1 = sqLiteDatabase.insert("USER_GOALS", null, values1);
+
+                cursor.close();
+
+                sqLiteDatabase.close();
+                return status1 != -1;
+            }
+
+            sqLiteDatabase.close();
+            return true;
+        }
+
         sqLiteDatabase.close();
-        return status != -1;
+        return false;
     }
 
     public ArrayList<String> getUserGoals(int userID){
         ArrayList<String> goals = null;
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
-        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM USER_RECORDS WHERE USER_ID = ?", new String[]{String.valueOf(userID)});
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM USER_GOALS WHERE USER_ID = ?", new String[]{String.valueOf(userID)});
 
         if(cursor.moveToFirst()){
             Double wGoal = cursor.getDouble(2);
@@ -324,12 +338,12 @@ public class SQLiteManager extends SQLiteOpenHelper {
         return routine;
     }
 
-    public void deleteRoutine(int routineID) {
+    public void deleteRoutine(RoutineData routine) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
 
-        long status = sqLiteDatabase.delete("ROUTINES", "ROUTINE_ID = ?", new String[]{String.valueOf(routineID)});
-        long status1 = sqLiteDatabase.delete("WORKOUTS", "ROUTINE_ID = ?", new String[]{String.valueOf(routineID)});
-        long status2 = sqLiteDatabase.delete("USER_ROUTINES", "ROUTINE_ID = ?", new String[]{String.valueOf(routineID)});
+        long status = sqLiteDatabase.delete("ROUTINES", "ROUTINE_ID = ?", new String[]{String.valueOf(routine.getId())});
+        long status1 = sqLiteDatabase.delete("WORKOUTS", "ROUTINE_ID = ?", new String[]{String.valueOf(routine.getId())});
+        long status2 = sqLiteDatabase.delete("USER_ROUTINES", "ROUTINE_ID = ?", new String[]{String.valueOf(routine.getId())});
 
         if(status != -1 && status1 != -1 && status2!= -1){
             Toast.makeText(context.getApplicationContext(), "Routine deleted!", Toast.LENGTH_LONG).show();
@@ -379,7 +393,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
                 cursor.close();
             } while (c.moveToNext());
         } else {
-            //Toast.makeText(context.getApplicationContext(), "No routines available!", Toast.LENGTH_LONG).show();
+            Toast.makeText(context.getApplicationContext(), "No routines available!", Toast.LENGTH_LONG).show();
         }
         c.close();
         sqLiteDatabase.close();
@@ -397,25 +411,6 @@ public class SQLiteManager extends SQLiteOpenHelper {
             }while(c.moveToNext());
         }
         return routineID;
-    }
-
-    //Checks if its your created routine, to determine if you can delete it or delete workouts in it
-    public boolean isRoutineCreated(RoutineData routineData, String userName) {
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        Cursor cursor = sqLiteDatabase.rawQuery("SELECT ROUTINE_ID FROM ROUTINES WHERE ROUTINE_NAME = ? AND ROUTINE_CREATOR = ?", new String[]{String.valueOf(routineData.getTitle()), (userName)});
-
-        int idCheck = -1;
-        if (cursor.moveToFirst() && cursor.getCount() >= 1) {
-            idCheck = cursor.getInt(0);
-        }
-        cursor.close();
-        sqLiteDatabase.close();
-
-        if (idCheck == routineData.getId()) {
-            return true;
-        }
-
-        return false;
     }
 
     //Individual Workouts DB Helper Methods
@@ -533,44 +528,6 @@ public class SQLiteManager extends SQLiteOpenHelper {
         return false;
     }
 
-    public void addRecord(double weight, double bodyFat, String dateRecorded, int userID){
-        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-
-        values.put("USER_CURRENT_WEIGHT", weight);
-        values.put("USER_CURRENT_BODY_FAT", bodyFat);
-        values.put("USER_CURRENT_DATE", dateRecorded);
-        values.put("USER_ID", userID);
-
-        long status = sqLiteDatabase.insert("USER_RECORDS", null, values);
-
-        if(status != -1){
-            Toast.makeText(context.getApplicationContext(), "Record added!", Toast.LENGTH_LONG).show();
-
-        } else {
-            Toast.makeText(context.getApplicationContext(), "Record not added!", Toast.LENGTH_LONG).show();
-        }
-
-        sqLiteDatabase.close();
-    }
-    public Cursor displayUserRecords(int userID){
-        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
-        Cursor cursor =  sqLiteDatabase.rawQuery("SELECT * FROM USER_RECORDS WHERE USER_ID = ?", new String[]{String.valueOf(userID)});
-        return cursor;
-    }
-
-    public ArrayList<Double> getUserRecords(int userID, int type){
-        ArrayList<Double> list = new ArrayList<>();
-        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
-        Cursor cursor =  sqLiteDatabase.rawQuery("SELECT * FROM USER_RECORDS WHERE USER_ID = ?", new String[]{String.valueOf(userID)});
-
-        while (cursor.moveToNext()){
-            list.add(Double.parseDouble(cursor.getString(type)));
-        }
-
-        return list;
-    }
-
     public void populateRoutines(SQLiteDatabase sqLiteDatabase){
         ArrayList<String> routines = new ArrayList<>();
 
@@ -666,4 +623,4 @@ public class SQLiteManager extends SQLiteOpenHelper {
             sqLiteDatabase.execSQL(workout);
         }
     }
-}
+    }

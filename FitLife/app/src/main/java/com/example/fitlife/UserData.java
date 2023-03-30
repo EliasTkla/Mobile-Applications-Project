@@ -9,28 +9,18 @@ public class UserData {
     private String email;
     private String password;
     private Double weight;
-    private Double weightG;
-    private Double bodyFat;
-    private Double bodyFatG;
     private Double height;
     private Integer age;
 
-    private String registeredDate;
-
     //Constructor
-    public UserData(String firstName, String lastName, String email, String password, Double weight, Double weightG, Double bodyFat, Double bodyFatG, Double height, Integer age, String registeredDate) {
+    public UserData(String firstName, String lastName, String email, String password, Double weight, Double height, Integer age) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-
         this.weight = weight;
-        this.weightG = weightG;
-        this.bodyFat = bodyFat;
-        this.bodyFatG = bodyFatG;
         this.height = height;
         this.age = age;
-        this.registeredDate = registeredDate;
     }
 
     public Integer getUserId(){
@@ -79,16 +69,6 @@ public class UserData {
         this.weight = newWeight;
     }
 
-    public Double getWeightG(){
-        return weightG;
-    }
-
-    public Double getBodyFat(){
-        return bodyFat;
-    }
-
-    public Double getBodyFatG(){ return bodyFatG; }
-
     public Double getHeight(){
         return height;
     }
@@ -100,8 +80,6 @@ public class UserData {
     public Integer getAge(){
         return age;
     }
-
-    public String getRegisteredDate(){ return registeredDate; }
 
     public void setAge(Integer newAge){
         this.age = newAge;

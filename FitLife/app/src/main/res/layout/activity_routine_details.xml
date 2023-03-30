@@ -28,16 +28,6 @@
             android:background="@drawable/ic_bookmark"
             android:contentDescription="@string/save_workout_routine"
             style="?android:attr/buttonBarButtonStyle" />
-
-        <Button
-            android:id="@+id/delete_routine_button"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:layout_alignParentEnd="true"
-            android:background="@android:drawable/ic_menu_delete"
-            android:visibility="gone"
-            android:contentDescription="@string/delete_workout_routine"
-            style="?android:attr/buttonBarButtonStyle" />
     </RelativeLayout>
 
     <LinearLayout
