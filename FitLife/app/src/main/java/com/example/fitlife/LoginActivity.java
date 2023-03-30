@@ -41,7 +41,6 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(home);
             finish();
         }
-
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -66,12 +65,18 @@ public class LoginActivity extends AppCompatActivity {
                             editor.putString("email_key", user.getEmail());
                             editor.putString("password_key", user.getPassword());
                             editor.putString("weight_key", String.valueOf(user.getWeight()));
+                            editor.putString("weightG_key", String.valueOf(user.getWeightG()));
+                            editor.putString("bodyFat_key", String.valueOf(user.getBodyFat()));
+                            editor.putString("bodyFatG_key", String.valueOf(user.getBodyFatG()));
                             editor.putString("height_key", String.valueOf(user.getHeight()));
-                            editor.putInt("age_key", user.getAge());
+                            editor.putString("age_key", String.valueOf(user.getAge()));
+                            editor.putString("register_date", user.getRegisteredDate());
 
                             editor.apply();
 
                             error_message1.setText("");
+
+                            sqLiteManager.addRecord(user.getWeight(), user.getBodyFat(), user.getRegisteredDate(), user.getUserId());
 
                             Intent home = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(home);
