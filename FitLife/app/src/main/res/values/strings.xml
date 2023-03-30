@@ -22,6 +22,7 @@
     <string name="filter_length"><u>Length</u></string>
     <string name="back_button">back button</string>
     <string name="save_workout_routine">save workout routine</string>
+    <string name="delete_workout_routine">delete workout routine</string>
     <string name="image_for_routine">image for routine</string>
     <string name="title_activity_login2">LoginActivity2</string>
     <string name="prompt_email">Email</string>
