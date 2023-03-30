@@ -1,8 +1,6 @@
 package com.example.fitlife;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -33,45 +31,45 @@ import java.util.Date;
 public class HomeFragment extends Fragment {
     View view;
     TextView welcomeUserText, lastDate;
-    String firstName, weight, weightGoal, bodyFat, bodyFatGoal;
-    Calendar calendar = Calendar.getInstance();
-    SimpleDateFormat sdf;
-    String getLastDate;
     FloatingActionButton addNewMeasurements;
     RecyclerView progressCardView;
     ArrayList<ProgressData> progressCards = new ArrayList<>();
     GraphView graph;
     LineGraphSeries<DataPoint> weightSeries, bodyFatSeries;
-    DataPoint[] weightDP, bodyFatDP;
+    DataPoint[] getWeightDP, getBodyFatDP;
     GridLabelRenderer renderer;
     Button switchGraph;
     boolean clicked = false;
 
-//    ProgressBar weightProgressBar, bodyFatProgressBar;
+    String getFirstName = "Supreyo";
+    String getFirstDate = "Mar 23, 2023";
+    String getLastDate = "Apr 25, 2023";
 
-    SharedPreferences sharedPreferences;
-    SQLiteManager sqLiteManager;
+    double getCurrentWeight = 150;
+    double getGoalWeight = 170;
+    double getStartingWeight = 120;
+
+    double getCurrentBodyFat = 7;
+    double getGoalBodyFat = 10;
+    double getStartingBodyFat = 5;
+
+    double weightDifference = getGoalWeight - getCurrentWeight;
+    double bodyFatDifference = getGoalBodyFat - getCurrentBodyFat;
+    String weightDifferenceOutput, bodyFatDifferenceOutput;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
+
         welcomeUserText = view.findViewById(R.id.welcomeUser);
         addNewMeasurements = view.findViewById(R.id.recordNewMeasurements);
         lastDate = view.findViewById(R.id.lastDate);
+
         progressCardView = view.findViewById(R.id.progressList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         progressCardView.setLayoutManager(layoutManager);
 
-        sdf = new SimpleDateFormat("EEE, MMM d, yyyy");
-        getLastDate = sdf.format(calendar.getTime());
-
-        sharedPreferences = this.getActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE);
-
-        firstName = sharedPreferences.getString("fname_key", null);
-        weight = sharedPreferences.getString("weight_key", null);
-
-
-        welcomeUserText.setText("Welcome " + firstName +"!");
+        welcomeUserText.setText("Welcome " + getFirstName +"!");
         lastDate.setText("From " + getLastDate);
 
         addNewMeasurements.setOnClickListener(new View.OnClickListener() {
@@ -82,16 +80,21 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        progressCards.add(new ProgressData( "Current Weight", String.valueOf(weight), "Goal Weight", "170lbs", "Starting Weight: 135lbs", "(+15lbs)", "Weight"));
-        progressCards.add(new ProgressData( "Current Body Fat","25%", "Goal Body Fat", "13%", "Starting Body Fat: 30%", "(-12%)", "Body Fat"));
+        if (weightDifference >= 0 || bodyFatDifference >=0){
+            weightDifferenceOutput = "+" + Double.toString(weightDifference);
+            bodyFatDifferenceOutput = "+" + Double.toString(bodyFatDifference);
+        }
+
+        else{
+            weightDifferenceOutput = Double.toString(weightDifference);
+            bodyFatDifferenceOutput = Double.toString(bodyFatDifference);
+        }
+
+        progressCards.add(new ProgressData( "Current Weight",getCurrentWeight + "lbs", "Goal Weight", getGoalWeight + "lbs", "Starting Weight: " + getStartingWeight + "lbs", "(" + weightDifferenceOutput + "lbs)", "Weight", Math.abs(getCurrentWeight - getStartingWeight), Math.abs(getGoalWeight - getStartingWeight)));
+        progressCards.add(new ProgressData( "Current Body Fat",getCurrentBodyFat + "%", "Goal Body Fat", getGoalBodyFat + "%", "Starting Body Fat: " + getStartingBodyFat + "%", "(" + bodyFatDifferenceOutput + "%)", "Body Fat", Math.abs(getCurrentBodyFat - getStartingBodyFat), Math.abs(getGoalBodyFat - getStartingBodyFat)));
 
         ProgressAdapter adapter = new ProgressAdapter(progressCards, HomeFragment.this);
         progressCardView.setAdapter(adapter);
-
-//        weightProgressBar = view.findViewById(R.id.weightProgress);
-//        bodyFatProgressBar = view.findViewById(R.id.bodyFatProgress);
-//        weightProgressBar.setProgressTintList(ColorStateList.valueOf(Color.rgb(162,210,223)));
-//        bodyFatProgressBar.setProgressTintList(ColorStateList.valueOf(Color.rgb(162,210,223)));
 
         graph = (GraphView) view.findViewById(R.id.trendGraph);
         switchGraph = view.findViewById(R.id.switchButton);
@@ -107,7 +110,7 @@ public class HomeFragment extends Fragment {
         graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
         graph.getViewport().setYAxisBoundsManual(true);
         renderer = graph.getGridLabelRenderer();
-        renderer.setHorizontalAxisTitle("        "+"Mar 23, 2023" + "                                                               " + "Apr 25, 2023");
+        renderer.setHorizontalAxisTitle("        " + getFirstDate + "                                                               " + getLastDate);
 
         weightSeries.setColor(Color.rgb(95,158,160));
         bodyFatSeries.setColor(Color.rgb(95,158,160));
@@ -121,7 +124,6 @@ public class HomeFragment extends Fragment {
         weightSeries.setDataPointsRadius(5);
         bodyFatSeries.setDrawDataPoints(true);
         bodyFatSeries.setDataPointsRadius(5);
-
         switchGraph.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -151,58 +153,58 @@ public class HomeFragment extends Fragment {
     }
 
     private DataPoint[] getDataPointWeight(){
-        weightDP = new DataPoint[]{
-                new DataPoint(0, 135),
-                new DataPoint(1, 137),
-                new DataPoint(2, 140),
-                new DataPoint(3, 140),
-                new DataPoint(4, 139),
-                new DataPoint(5, 143),
-                new DataPoint(6, 147),
-                new DataPoint(7, 150),
-                new DataPoint(8, 148),
-                new DataPoint(9, 148),
-                new DataPoint(10, 149),
-                new DataPoint(11, 152),
-                new DataPoint(12, 155),
-                new DataPoint(13, 154),
-                new DataPoint(14, 157),
-                new DataPoint(15, 159),
-                new DataPoint(16, 160),
-                new DataPoint(17, 159),
-                new DataPoint(18, 162),
-                new DataPoint(19, 164),
-                new DataPoint(20, 165)
+        getWeightDP = new DataPoint[]{
+        new DataPoint(0, 135),
+        new DataPoint(1, 137),
+        new DataPoint(2, 140),
+        new DataPoint(3, 140),
+        new DataPoint(4, 139),
+        new DataPoint(5, 143),
+        new DataPoint(6, 147),
+        new DataPoint(7, 150),
+        new DataPoint(8, 148),
+        new DataPoint(9, 148),
+        new DataPoint(10, 149),
+        new DataPoint(11, 152),
+        new DataPoint(12, 155),
+        new DataPoint(13, 154),
+        new DataPoint(14, 157),
+        new DataPoint(15, 159),
+        new DataPoint(16, 160),
+        new DataPoint(17, 159),
+        new DataPoint(18, 162),
+        new DataPoint(19, 164),
+        new DataPoint(20, 165)
         };
 
-        return weightDP;
+        return getWeightDP;
     }
 
     private DataPoint[] getDataPointBodyFat(){
-        bodyFatDP = new DataPoint[]{
-                new DataPoint(0, 30),
-                new DataPoint(1, 30),
-                new DataPoint(2, 29),
-                new DataPoint(3, 28),
-                new DataPoint(4, 26),
-                new DataPoint(5, 27),
-                new DataPoint(6, 26),
-                new DataPoint(7, 26),
-                new DataPoint(8, 25),
-                new DataPoint(9, 24),
-                new DataPoint(10, 25),
-                new DataPoint(11, 23),
-                new DataPoint(12, 22),
-                new DataPoint(13, 22),
-                new DataPoint(14, 23),
-                new DataPoint(15, 24),
-                new DataPoint(16, 23),
-                new DataPoint(17, 22),
-                new DataPoint(18, 22),
-                new DataPoint(19, 21),
-                new DataPoint(20, 20)
+        getBodyFatDP = new DataPoint[]{
+        new DataPoint(0, 30),
+        new DataPoint(1, 30),
+        new DataPoint(2, 29),
+        new DataPoint(3, 28),
+        new DataPoint(4, 26),
+        new DataPoint(5, 27),
+        new DataPoint(6, 26),
+        new DataPoint(7, 26),
+        new DataPoint(8, 25),
+        new DataPoint(9, 24),
+        new DataPoint(10, 25),
+        new DataPoint(11, 23),
+        new DataPoint(12, 22),
+        new DataPoint(13, 22),
+        new DataPoint(14, 23),
+        new DataPoint(15, 24),
+        new DataPoint(16, 23),
+        new DataPoint(17, 22),
+        new DataPoint(18, 22),
+        new DataPoint(19, 21),
+        new DataPoint(20, 20)
         };
 
-        return bodyFatDP;
+        return getBodyFatDP;
     }
 }
