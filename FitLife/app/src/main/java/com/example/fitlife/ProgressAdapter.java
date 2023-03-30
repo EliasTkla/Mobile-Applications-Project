@@ -48,7 +48,6 @@ public class ProgressAdapter extends RecyclerView.Adapter<ProgressAdapter.Progre
 
         holder.cardProgressBar.setProgressTintList(ColorStateList.valueOf(Color.rgb(80, 85, 112)));
         holder.cardProgressBar.setProgress((int)dataList.getProgress());
-        holder.cardProgressBar.setMax((int)dataList.getMax());
     }
 
     @Override
