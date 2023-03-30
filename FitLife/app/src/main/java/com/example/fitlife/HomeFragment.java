@@ -45,17 +45,19 @@ public class HomeFragment extends Fragment {
     String getFirstDate = "Mar 23, 2023";
     String getLastDate = "Apr 25, 2023";
 
-    double getCurrentWeight = 150;
-    double getGoalWeight = 170;
+    double getCurrentWeight = 170;
+    double getGoalWeight = 205;
     double getStartingWeight = 120;
 
-    double getCurrentBodyFat = 7;
-    double getGoalBodyFat = 10;
-    double getStartingBodyFat = 5;
+    double getCurrentBodyFat = 23;
+    double getGoalBodyFat = 15;
+    double getStartingBodyFat = 30;
 
     double weightDifference = getGoalWeight - getCurrentWeight;
     double bodyFatDifference = getGoalBodyFat - getCurrentBodyFat;
     String weightDifferenceOutput, bodyFatDifferenceOutput;
+
+    SQLiteManager sqLiteManager;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -80,18 +82,31 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        if (weightDifference >= 0 || bodyFatDifference >=0){
-            weightDifferenceOutput = "+" + Double.toString(weightDifference);
-            bodyFatDifferenceOutput = "+" + Double.toString(bodyFatDifference);
+        weightDifference = Math.round(weightDifference * 100);
+        weightDifference = weightDifference/100;
+
+        bodyFatDifference = Math.round(bodyFatDifference * 100);
+        bodyFatDifference = bodyFatDifference/100;
+
+        if (weightDifference < 0){
+            weightDifferenceOutput = Double.toString(weightDifference);
         }
 
         else{
-            weightDifferenceOutput = Double.toString(weightDifference);
+            weightDifferenceOutput = "+" + Double.toString(weightDifference);
+
+        }
+
+        if (bodyFatDifference < 0){
             bodyFatDifferenceOutput = Double.toString(bodyFatDifference);
         }
 
-        progressCards.add(new ProgressData( "Current Weight",getCurrentWeight + "lbs", "Goal Weight", getGoalWeight + "lbs", "Starting Weight: " + getStartingWeight + "lbs", "(" + weightDifferenceOutput + "lbs)", "Weight", Math.abs(getCurrentWeight - getStartingWeight), Math.abs(getGoalWeight - getStartingWeight)));
-        progressCards.add(new ProgressData( "Current Body Fat",getCurrentBodyFat + "%", "Goal Body Fat", getGoalBodyFat + "%", "Starting Body Fat: " + getStartingBodyFat + "%", "(" + bodyFatDifferenceOutput + "%)", "Body Fat", Math.abs(getCurrentBodyFat - getStartingBodyFat), Math.abs(getGoalBodyFat - getStartingBodyFat)));
+        else{
+            bodyFatDifferenceOutput = "+" + Double.toString(bodyFatDifference);
+        }
+
+        progressCards.add(new ProgressData( "Current Weight",getCurrentWeight + "lbs", "Goal Weight", getGoalWeight + "lbs", "Starting Weight: " + getStartingWeight + "lbs", "(" + weightDifferenceOutput + "lbs)", "Weight", ((Math.abs(getCurrentWeight - getStartingWeight) / Math.abs(getGoalWeight - getStartingWeight)*100))));
+        progressCards.add(new ProgressData( "Current Body Fat",getCurrentBodyFat + "%", "Goal Body Fat", getGoalBodyFat + "%", "Starting Body Fat: " + getStartingBodyFat + "%", "(" + bodyFatDifferenceOutput + "%)", "Body Fat", ((Math.abs(getCurrentBodyFat - getStartingBodyFat) / Math.abs(getGoalBodyFat - getStartingBodyFat)*100))));
 
         ProgressAdapter adapter = new ProgressAdapter(progressCards, HomeFragment.this);
         progressCardView.setAdapter(adapter);
