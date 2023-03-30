@@ -25,11 +25,13 @@ public class MainActivity extends AppCompatActivity {
     SavedWorkoutsFragment savedWorkoutsFragment = new SavedWorkoutsFragment();
     ProfileFragment profileFragment = new ProfileFragment();
     Fragment currentActive;
+    SQLiteManager sqLiteManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        sqLiteManager = new SQLiteManager(MainActivity.this);
 
         bottomNavigationView = findViewById(R.id.navigation_bar);
 

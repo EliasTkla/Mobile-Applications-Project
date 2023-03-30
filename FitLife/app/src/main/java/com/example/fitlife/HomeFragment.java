@@ -31,24 +31,31 @@ import java.util.Date;
 public class HomeFragment extends Fragment {
     View view;
     TextView welcomeUserText, lastDate;
-    String firstName = "Supreyo";
-    String getLastDate = "March 22, 2023";
     FloatingActionButton addNewMeasurements;
     RecyclerView progressCardView;
     ArrayList<ProgressData> progressCards = new ArrayList<>();
     GraphView graph;
     LineGraphSeries<DataPoint> weightSeries, bodyFatSeries;
-    DataPoint[] weightDP, bodyFatDP;
+    DataPoint[] getWeightDP, getBodyFatDP;
     GridLabelRenderer renderer;
     Button switchGraph;
     boolean clicked = false;
 
-//    double getCurrentWeight = 165;
-//    double getGoalCurrentWeight = 175;
-//    double getCurrentBodyFat = 25;
-//    double getGoalCurrentBodyFat = 13;
+    String getFirstName = "Supreyo";
+    String getFirstDate = "Mar 23, 2023";
+    String getLastDate = "Apr 25, 2023";
 
-//    ProgressBar weightProgressBar, bodyFatProgressBar;
+    double getCurrentWeight = 150;
+    double getGoalWeight = 170;
+    double getStartingWeight = 120;
+
+    double getCurrentBodyFat = 7;
+    double getGoalBodyFat = 10;
+    double getStartingBodyFat = 5;
+
+    double weightDifference = getGoalWeight - getCurrentWeight;
+    double bodyFatDifference = getGoalBodyFat - getCurrentBodyFat;
+    String weightDifferenceOutput, bodyFatDifferenceOutput;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -62,7 +69,7 @@ public class HomeFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         progressCardView.setLayoutManager(layoutManager);
 
-        welcomeUserText.setText("Welcome " + firstName +"!");
+        welcomeUserText.setText("Welcome " + getFirstName +"!");
         lastDate.setText("From " + getLastDate);
 
         addNewMeasurements.setOnClickListener(new View.OnClickListener() {
@@ -73,16 +80,21 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        progressCards.add(new ProgressData( "Current Weight","155lbs", "Goal Weight", "170lbs", "Starting Weight: 135lbs", "(+15lbs)", "Weight"));
-        progressCards.add(new ProgressData( "Current Body Fat","25%", "Goal Body Fat", "13%", "Starting Body Fat: 30%", "(-12%)", "Body Fat"));
+        if (weightDifference >= 0 || bodyFatDifference >=0){
+            weightDifferenceOutput = "+" + Double.toString(weightDifference);
+            bodyFatDifferenceOutput = "+" + Double.toString(bodyFatDifference);
+        }
+
+        else{
+            weightDifferenceOutput = Double.toString(weightDifference);
+            bodyFatDifferenceOutput = Double.toString(bodyFatDifference);
+        }
+
+        progressCards.add(new ProgressData( "Current Weight",getCurrentWeight + "lbs", "Goal Weight", getGoalWeight + "lbs", "Starting Weight: " + getStartingWeight + "lbs", "(" + weightDifferenceOutput + "lbs)", "Weight", Math.abs(getCurrentWeight - getStartingWeight), Math.abs(getGoalWeight - getStartingWeight)));
+        progressCards.add(new ProgressData( "Current Body Fat",getCurrentBodyFat + "%", "Goal Body Fat", getGoalBodyFat + "%", "Starting Body Fat: " + getStartingBodyFat + "%", "(" + bodyFatDifferenceOutput + "%)", "Body Fat", Math.abs(getCurrentBodyFat - getStartingBodyFat), Math.abs(getGoalBodyFat - getStartingBodyFat)));
 
         ProgressAdapter adapter = new ProgressAdapter(progressCards, HomeFragment.this);
         progressCardView.setAdapter(adapter);
-
-//        weightProgressBar = view.findViewById(R.id.weightProgress);
-//        bodyFatProgressBar = view.findViewById(R.id.bodyFatProgress);
-//        weightProgressBar.setProgressTintList(ColorStateList.valueOf(Color.rgb(162,210,223)));
-//        bodyFatProgressBar.setProgressTintList(ColorStateList.valueOf(Color.rgb(162,210,223)));
 
         graph = (GraphView) view.findViewById(R.id.trendGraph);
         switchGraph = view.findViewById(R.id.switchButton);
@@ -98,7 +110,7 @@ public class HomeFragment extends Fragment {
         graph.getGridLabelRenderer().setHorizontalLabelsVisible(false);
         graph.getViewport().setYAxisBoundsManual(true);
         renderer = graph.getGridLabelRenderer();
-        renderer.setHorizontalAxisTitle("        "+"Mar 23, 2023" + "                                                               " + "Apr 25, 2023");
+        renderer.setHorizontalAxisTitle("        " + getFirstDate + "                                                               " + getLastDate);
 
         weightSeries.setColor(Color.rgb(95,158,160));
         bodyFatSeries.setColor(Color.rgb(95,158,160));
@@ -141,7 +153,7 @@ public class HomeFragment extends Fragment {
     }
 
     private DataPoint[] getDataPointWeight(){
-        weightDP = new DataPoint[]{
+        getWeightDP = new DataPoint[]{
         new DataPoint(0, 135),
         new DataPoint(1, 137),
         new DataPoint(2, 140),
@@ -165,11 +177,11 @@ public class HomeFragment extends Fragment {
         new DataPoint(20, 165)
         };
 
-        return weightDP;
+        return getWeightDP;
     }
 
     private DataPoint[] getDataPointBodyFat(){
-        bodyFatDP = new DataPoint[]{
+        getBodyFatDP = new DataPoint[]{
         new DataPoint(0, 30),
         new DataPoint(1, 30),
         new DataPoint(2, 29),
@@ -193,6 +205,6 @@ public class HomeFragment extends Fragment {
         new DataPoint(20, 20)
         };
 
-        return bodyFatDP;
+        return getBodyFatDP;
     }
 }

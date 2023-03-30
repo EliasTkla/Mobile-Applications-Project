@@ -2,9 +2,12 @@ package com.example.fitlife;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -43,6 +46,9 @@ public class ProgressAdapter extends RecyclerView.Adapter<ProgressAdapter.Progre
         holder.progressLeft.setText(dataList.getProgressLeft());
         holder.progressTypeTitle.setText(dataList.getProgressTypeTitle());
 
+        holder.cardProgressBar.setProgressTintList(ColorStateList.valueOf(Color.rgb(80, 85, 112)));
+        holder.cardProgressBar.setProgress((int)dataList.getProgress());
+        holder.cardProgressBar.setMax((int)dataList.getMax());
     }
 
     @Override
@@ -51,10 +57,11 @@ public class ProgressAdapter extends RecyclerView.Adapter<ProgressAdapter.Progre
     }
 
     public class ProgressViewHolder extends RecyclerView.ViewHolder{
-
         CardView progressCard;
         TextView currentTitle, goalTitle;
         TextView currentTitleDisplay, goalTitleDisplay, startingTitle, progressLeft, progressTypeTitle;
+        ProgressBar cardProgressBar;
+
         public ProgressViewHolder(@NonNull View itemView) {
             super(itemView);
             progressCard = itemView.findViewById(R.id.progressCard);
@@ -65,6 +72,7 @@ public class ProgressAdapter extends RecyclerView.Adapter<ProgressAdapter.Progre
             startingTitle = itemView.findViewById(R.id.startingTitle);
             progressLeft = itemView.findViewById(R.id.progressLeft);
             progressTypeTitle = itemView.findViewById(R.id.progressTypeTitle);
+            cardProgressBar = itemView.findViewById(R.id.progressBar);
         }
     }
 }

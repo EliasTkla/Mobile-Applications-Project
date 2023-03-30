@@ -1,9 +1,5 @@
 package com.example.fitlife;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,18 +10,18 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
 public class BodyMeasurementsActivity extends AppCompatActivity {
-    FragmentManager fragmentManager = getSupportFragmentManager();
-    HomeFragment homeFragment = new HomeFragment();
-    Fragment currentActive;
-    Button addButton;
     EditText addWeight, addBodyFat, addDate;
-
     final Calendar myCalendar = Calendar.getInstance();
+    Button addButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +38,7 @@ public class BodyMeasurementsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 double getWeight = Double.parseDouble(addWeight.getText().toString());
                 double getBodyFat = Double.parseDouble(addBodyFat.getText().toString());
+                String getDate = addDate.getText().toString();
 
                 Intent homePage = new Intent(BodyMeasurementsActivity.this, MainActivity.class);
                 startActivity(homePage);
@@ -51,7 +48,6 @@ public class BodyMeasurementsActivity extends AppCompatActivity {
                 addedMessage.show();
             }
         });
-
         DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
@@ -61,7 +57,6 @@ public class BodyMeasurementsActivity extends AppCompatActivity {
                 updateLabel();
             }
         };
-
         addDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,9 +64,8 @@ public class BodyMeasurementsActivity extends AppCompatActivity {
             }
         });
     }
-
     private void updateLabel(){
-        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yy", Locale.CANADA);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MMM dd, yyyy", Locale.US);
         addDate.setText(dateFormat.format(myCalendar.getTime()));
     }
 }
