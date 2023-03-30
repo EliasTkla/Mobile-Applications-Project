@@ -23,8 +23,9 @@
             <ImageView
                 android:id="@+id/routine_image"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="100dp"
                 android:background="@color/silver"
+                android:src="@drawable/ic_image_placeholder"
                 android:contentDescription="routine image" />
 
             <TextView

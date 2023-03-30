@@ -1,6 +1,7 @@
 package com.example.fitlife;
 
 import android.annotation.SuppressLint;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -28,9 +29,8 @@ public class DiscoverFragment extends Fragment {
     Button filterButton, searchButton, clearButton;
     RecyclerView routinesView;
     BottomSheetDialog dialogFragment;
-    ArrayList<String> selectedLevels;
+    String[] selectedLevels = new String[3];
     ArrayList<RoutineData> routines = new ArrayList<>();
-    ArrayList<WorkoutData> workouts = new ArrayList<>();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,18 +45,9 @@ public class DiscoverFragment extends Fragment {
         routinesQuantity = view.findViewById(R.id.result_number);
         dialogFragment = new BottomSheetDialog(requireActivity());
 
-        for(int i = 1; i < 11; i++){
-            workouts.add(new WorkoutData(i, "workout "+i, 5, 12));
-        }
+        SQLiteManager db = new SQLiteManager(getActivity());
 
-        routines.add(new RoutineData(1, "PPL x2 Program", "r/Fitness", "Intermediate", 6, 12, workouts));
-        routines.add(new RoutineData(2, "Upp/Low x2 Program", "r/Fitness", "Beginner", 4, 6, workouts));
-        routines.add(new RoutineData(3, "Strongman Program", "r/Fitness", "Advanced", 3, 24, workouts));
-        routines.add(new RoutineData(4, "Upp/Low x2 Program", "r/Fitness", "Beginner", 4, 6, workouts));
-        routines.add(new RoutineData(5, "Strongman Program", "r/Fitness", "Advanced", 3, 24, workouts));
-        routines.add(new RoutineData(6, "Strongman Program", "r/Fitness", "Advanced", 3, 24, workouts));
-        routines.add(new RoutineData(7, "Upp/Low x2 Program", "r/Fitness", "Beginner", 4, 6, workouts));
-        routines.add(new RoutineData(8, "Strongman Program", "r/Fitness", "Advanced", 3, 24, workouts));
+        routines = db.getRoutines();
 
         String resultsNum = routines.size()+" results";
         routinesQuantity.setText(resultsNum);
@@ -117,6 +108,10 @@ public class DiscoverFragment extends Fragment {
                 routinesQuantity.setText(resultsNum);
                 RoutineAdapter adapter = new RoutineAdapter(filteredRoutines, DiscoverFragment.this);
                 routinesView.setAdapter(adapter);
+
+                selectedLevels[0] = null;
+                selectedLevels[1] = null;
+                selectedLevels[2] = null;
             }
         });
 
@@ -132,15 +127,14 @@ public class DiscoverFragment extends Fragment {
     }
 
     public void filteredRoutines(){
-        Log.d("filter levels", String.valueOf(selectedLevels));
         ArrayList<RoutineData> filteredRoutines = new ArrayList<>();
 
         for(RoutineData routine : routines){
-            if(selectedLevels.get(0) == null && selectedLevels.get(1) == null && selectedLevels.get(2) == null){
+            if(selectedLevels[0] == null && selectedLevels[1] == null && selectedLevels[2] == null){
                 filteredRoutines.add(routine);
             } else {
                 for (int i = 0; i < 3; i++) {
-                    if (routine.getLevel().equalsIgnoreCase(selectedLevels.get(i))) {
+                    if (routine.getLevel().equalsIgnoreCase(selectedLevels[i])) {
                         filteredRoutines.add(routine);
                     }
                 }
@@ -154,23 +148,22 @@ public class DiscoverFragment extends Fragment {
     }
 
     private void levelsSelected(CheckBox l1, CheckBox l2, CheckBox l3){
-        selectedLevels.clear();
         if(l1.isChecked()){
-            selectedLevels.add((String) l1.getText());
+            selectedLevels[0] = (String) l1.getText();
         } else {
-            selectedLevels.add(null);
+            selectedLevels[0] = null;
         }
 
         if(l2.isChecked()){
-            selectedLevels.add((String) l2.getText());
+            selectedLevels[1] = (String) l2.getText();
         } else {
-            selectedLevels.add(null);
+            selectedLevels[1] = null;
         }
 
         if(l3.isChecked()){
-            selectedLevels.add((String) l3.getText());
+            selectedLevels[2] = (String) l3.getText();
         } else {
-            selectedLevels.add(null);
+            selectedLevels[2] = null;
         }
     }
 
@@ -178,7 +171,7 @@ public class DiscoverFragment extends Fragment {
         Button applyFilter;
         TextView resetFilter;
         CheckBox l1, l2, l3;
-        @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.bottom_sheet_filter, null, false);
+        View view = getLayoutInflater().inflate(R.layout.bottom_sheet_filter, null, false);
 
         l1 = view.findViewById(R.id.beginner_level);
         l2 = view.findViewById(R.id.intermediate_level);
@@ -186,18 +179,22 @@ public class DiscoverFragment extends Fragment {
         applyFilter = view.findViewById(R.id.apply_filter);
         resetFilter = view.findViewById(R.id.reset_filter);
 
-        if(!selectedLevels.isEmpty()) {
-            if (selectedLevels.get(0) != null) {
-                l1.setChecked(true);
-            }
+        if (selectedLevels[0] != null) {
+            l1.setChecked(true);
+        } else {
+            l1.setChecked(false);
+        }
 
-            if (selectedLevels.get(1) != null) {
-                l2.setChecked(true);
-            }
+        if (selectedLevels[1] != null) {
+            l2.setChecked(true);
+        } else {
+            l2.setChecked(false);
+        }
 
-            if (selectedLevels.get(2) != null) {
-                l3.setChecked(true);
-            }
+        if (selectedLevels[2] != null) {
+            l3.setChecked(true);
+        } else {
+            l3.setChecked(false);
         }
 
         applyFilter.setOnClickListener(new View.OnClickListener() {

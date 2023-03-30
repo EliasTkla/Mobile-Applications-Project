@@ -6,6 +6,42 @@
     android:orientation="vertical"
     tools:context=".RegisterActivity">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="20dp"
+        android:text="@string/fitlife"
+        android:textColor="@color/teal_700"
+        android:textSize="60sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="@string/start_your_exercise_journey_today"
+        android:textColor="@color/teal_700"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/error_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center"
+        android:text=""
+        android:textSize="15sp"
+        android:textColor="@color/red"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:gravity="center"
+        android:text="Personal Information"
+        android:textSize="18sp" />
+
     <LinearLayout
         android:id="@+id/personal_info"
         android:layout_width="match_parent"
@@ -13,42 +49,22 @@
         android:orientation="vertical"
         android:visibility="visible">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/fitlife"
-            android:textSize="60sp"
-            android:gravity="center"
-            android:layout_margin="20dp"
-            android:textColor="@color/teal_700"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/start_your_exercise_journey_today"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:textColor="@color/teal_700"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
-            android:layout_marginStart="50dp"
-            android:text="@string/personal_information"
-            android:textSize="18sp" />
-
         <EditText
             android:id="@+id/user_fname"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
+            android:autofillHints="first name"
+            android:background="@drawable/custom_input"
+            android:drawableStart="@drawable/ic_person"
+            android:drawablePadding="10dp"
             android:hint="@string/first_name"
+            android:inputType="textPersonName"
             android:minHeight="48dp"
-            android:textSize="15sp"
-            android:autofillHints=""
-            android:inputType="textPersonName" />
+            android:paddingStart="15dp"
+            android:paddingEnd="10dp"
+            android:textSize="15sp" />
 
         <EditText
             android:id="@+id/user_lname"
@@ -56,11 +72,16 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
+            android:autofillHints="last name"
+            android:background="@drawable/custom_input"
+            android:drawableStart="@drawable/ic_person"
+            android:drawablePadding="10dp"
             android:hint="@string/last_name"
-            android:minHeight="48dp"
-            android:textSize="15sp"
             android:inputType="textPersonName"
-            android:autofillHints="" />
+            android:minHeight="48dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="10dp"
+            android:textSize="15sp" />
 
         <EditText
             android:id="@+id/user_email"
@@ -68,23 +89,17 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
+            android:autofillHints="email"
+            android:background="@drawable/custom_input"
+            android:drawableStart="@drawable/ic_email"
+            android:drawablePadding="10dp"
             android:hint="@string/email"
-            android:minHeight="48dp"
-            android:textSize="15sp"
             android:inputType="textEmailAddress"
-            android:autofillHints="" />
-
-        <EditText
-            android:id="@+id/user_username"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp"
-            android:hint="@string/username"
             android:minHeight="48dp"
-            android:textSize="15sp"
-            android:inputType="text"
-            android:autofillHints="" />
+            android:paddingStart="15dp"
+            android:paddingEnd="10dp"
+            android:textSize="15sp" />
+
 
         <EditText
             android:id="@+id/user_pwd"
@@ -92,18 +107,24 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="20dp"
+            android:autofillHints="password"
+            android:background="@drawable/custom_input"
+            android:drawableStart="@drawable/ic_password"
+            android:drawablePadding="10dp"
             android:hint="@string/password"
-            android:minHeight="48dp"
-            android:textSize="15sp"
             android:inputType="textPassword"
-            android:autofillHints="" />
+            android:minHeight="48dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="10dp"
+            android:textSize="15sp" />
 
         <Button
             android:id="@+id/next_btn"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/custom_button"
             android:backgroundTint="@color/teal_700"
             android:text="@string/next"
             android:textColor="#000000"
@@ -118,79 +139,144 @@
         android:orientation="vertical"
         android:visibility="gone">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/fitlife"
-            android:textSize="60sp"
-            android:gravity="center"
-            android:layout_margin="20dp"
-            android:textColor="@color/teal_700"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/start_your_exercise_journey_today"
-            android:textSize="20sp"
-            android:gravity="center"
-            android:textColor="@color/teal_700"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginStart="50dp"
-            android:text="@string/physical_information"
-            android:textSize="18sp" />
-
-        <TableRow
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="20dp">
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
 
             <EditText
                 android:id="@+id/user_weight"
-                android:layout_width="137.5dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="25dp"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:autofillHints="weight"
+                android:background="@drawable/custom_input"
+                android:drawableStart="@drawable/ic_scale"
+                android:drawablePadding="10dp"
                 android:hint="@string/weight_lbs"
-                android:minHeight="48dp"
-                android:textColorHint="#757575"
-                android:textSize="15sp"
-                android:autofillHints=""
-                android:inputType="numberDecimal" />
+                android:inputType="numberDecimal"
+                android:paddingStart="15dp"
+                android:paddingEnd="10dp"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/user_weight_goal"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:autofillHints="weight"
+                android:background="@drawable/custom_input"
+                android:drawableStart="@drawable/ic_scale"
+                android:drawablePadding="10dp"
+                android:hint="Weight Goal (lbs)"
+                android:inputType="numberDecimal"
+                android:paddingStart="15dp"
+                android:paddingEnd="10dp"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <EditText
+                android:id="@+id/user_bodyFat"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:autofillHints="weight"
+                android:background="@drawable/custom_input"
+                android:drawableStart="@drawable/ic_percent"
+                android:drawablePadding="10dp"
+                android:hint="Body Fat"
+                android:inputType="numberDecimal"
+                android:paddingStart="15dp"
+                android:paddingEnd="10dp"
+                android:textSize="15sp" />
+
+            <EditText
+                android:id="@+id/user_bodyFat_goal"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:autofillHints="weight"
+                android:background="@drawable/custom_input"
+                android:drawableStart="@drawable/ic_percent"
+                android:drawablePadding="10dp"
+                android:hint="Body Fat Goal"
+                android:inputType="numberDecimal"
+                android:paddingStart="15dp"
+                android:paddingEnd="10dp"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="20dp"
+            android:orientation="horizontal"
+            android:weightSum="2">
 
             <EditText
                 android:id="@+id/user_height"
-                android:layout_width="137.5dp"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="10dp"
+                android:layout_weight="1"
+                android:autofillHints="height"
+                android:background="@drawable/custom_input"
+                android:drawableStart="@drawable/ic_height"
+                android:drawablePadding="20dp"
                 android:hint="@string/height_cm"
-                android:minHeight="48dp"
-                android:textColorHint="#757575"
-                android:textSize="15sp"
                 android:inputType="numberDecimal"
-                android:autofillHints="" />
-        </TableRow>
+                android:paddingStart="15dp"
+                android:paddingEnd="10dp"
+                android:textSize="15sp" />
 
-        <EditText
-            android:id="@+id/user_age"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="80dp"
-            android:layout_marginTop="20dp"
-            android:hint="@string/age"
-            android:minHeight="48dp"
-            android:textSize="15sp"
-            android:inputType="number"
-            android:autofillHints="" />
+            <EditText
+                android:id="@+id/user_age"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:autofillHints="age"
+                android:background="@drawable/custom_input"
+                android:drawableStart="@drawable/ic_age"
+                android:drawablePadding="10dp"
+                android:hint="@string/age"
+                android:inputType="number"
+                android:paddingStart="15dp"
+                android:paddingEnd="10dp"
+                android:textSize="15sp" />
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/register_btn"
-            android:layout_width="150dp"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="50dp"
+            android:background="@drawable/custom_button"
             android:backgroundTint="@color/teal_700"
             android:text="@string/register"
             android:textColor="#000000"
@@ -202,17 +288,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="25dp"
-        android:text="@string/already_registered"/>
+        android:layout_marginTop="15dp"
+        android:text="@string/already_registered" />
 
-    <Button
+    <TextView
         android:id="@+id/to_login_btn"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="0dp"
-        android:backgroundTint="@color/teal_200"
+        android:gravity="center"
         android:text="@string/login"
-        android:textColor="#000000"
-        tools:ignore="TextContrastCheck" />
+        android:textColor="@color/teal_700" />
 </LinearLayout>
