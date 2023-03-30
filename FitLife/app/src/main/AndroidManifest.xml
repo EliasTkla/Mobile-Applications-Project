@@ -20,6 +20,10 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
+            android:name=".EditProfileFragment"
+            />
+
+        <activity
             android:name=".LoginActivity"
             android:exported="false" />
         <activity
@@ -39,6 +43,7 @@
             android:name=".RoutineDetailsActivity"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
+
     </application>
 
 </manifest>
