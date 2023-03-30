@@ -41,19 +41,13 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
         String length = dataList.getLength()+" weeks long";
         holder.frequencyView.setText(freq);
         holder.lengthView.setText(length);
-        ArrayList<WorkoutData> workouts = dataList.getWorkoutsList();
 
         holder.card_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent detailsPage = new Intent(view.getContext(), RoutineDetailsActivity.class);
 
-                detailsPage.putExtra("title", holder.titleView.getText());
-                detailsPage.putExtra("creator", "By: "+holder.creatorView.getText());
-                detailsPage.putExtra("level", "Level: "+holder.levelView.getText());
-                detailsPage.putExtra("frequency", holder.frequencyView.getText());
-                detailsPage.putExtra("length", holder.lengthView.getText());
-                detailsPage.putExtra("workouts", workouts);
+                detailsPage.putExtra("routine id", dataList.getId());
 
                 detailsPage.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 view.getContext().startActivity(detailsPage);

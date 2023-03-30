@@ -18,6 +18,7 @@ public class RoutineDetailsActivity extends AppCompatActivity {
     RecyclerView workoutsView;
     boolean saved = false;
     ArrayList<WorkoutData> workouts = new ArrayList<>();
+    SQLiteManager sqLiteManager;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,21 +33,28 @@ public class RoutineDetailsActivity extends AppCompatActivity {
         length = findViewById(R.id.program_length);
         backButton = findViewById(R.id.back_button);
         saveButton = findViewById(R.id.save_routine_button);
+        sqLiteManager = new SQLiteManager(getApplicationContext());
 
         Intent details = getIntent();
 
-        title.setText(details.getStringExtra("title"));
-        createdBy.setText(details.getStringExtra("creator"));
-        level.setText(details.getStringExtra("level"));
-        frequency.setText(details.getStringExtra("frequency"));
-        length.setText(details.getStringExtra("length"));
+        int id = details.getIntExtra("routine id", 0);
 
-        workouts = (ArrayList<WorkoutData>) details.getSerializableExtra("workouts");
+        RoutineData routine = sqLiteManager.getRoutine(id);
+
+        title.setText(routine.getTitle());
+        createdBy.setText(routine.getCreator());
+        level.setText(routine.getLevel());
+        String freq = routine.getFrequency()+"x week";
+        String len = routine.getLength()+" weeks long";
+        frequency.setText(freq);
+        length.setText(len);
+
+        workouts = routine.getWorkoutsList();
 
         WorkoutsAdapter adapter = new WorkoutsAdapter(workouts, RoutineDetailsActivity.this);
         workoutsView.setAdapter(adapter);
 
-        SQLiteManager sqLiteManager = new SQLiteManager(RoutineDetailsActivity.this);
+        sqLiteManager.isRoutineSaved(routine.getId(), routine.getId());
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +67,7 @@ public class RoutineDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!saved) {
-                    sqLiteManager.saveUserRoutine(12, 12);
+                    sqLiteManager.saveUserRoutine(12, 12, false);
                     saveButton.setBackgroundResource(R.drawable.ic_bookmarked);
                     saved = true;
                 } else {
