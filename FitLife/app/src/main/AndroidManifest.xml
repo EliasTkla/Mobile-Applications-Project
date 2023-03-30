@@ -48,13 +48,12 @@
             android:exported="false"
             android:parentActivityName=".MainActivity" />
 
-<<<<<<<<< Temporary merge branch 1
+
         <activity
             android:name=".BodyMeasurementsActivity"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
-=========
->>>>>>>>> Temporary merge branch 2
+
     </application>
 
 </manifest>

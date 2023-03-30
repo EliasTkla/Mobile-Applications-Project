@@ -1,6 +1,7 @@
 package com.example.fitlife;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,6 +11,12 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
+import androidx.appcompat.app.AlertDialog;
+import androidx.fragment.app.Fragment;
+import android.content.DialogInterface;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
 
 import androidx.fragment.app.Fragment;
 
@@ -92,6 +99,53 @@ public class SettingsFragment extends Fragment {
                 getActivity().finish();
             }
         });
+
+
+        Button deleteAccountButton = view.findViewById(R.id.delete_button);
+        deleteAccountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Show a confirmation dialog before deleting the account
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("Are you sure you want to delete your account?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            private void logoutUser() {
+                                // Clear the shared preferences
+                                editor.clear();
+                                editor.apply();
+                                // Launch the login activity
+                                Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                getActivity().finish();
+                            }
+
+                            private void deleteAccount() {
+                                // TODO: Perform the deletion logic here
+                                // This could involve deleting the user's data from a local database, server, or both
+                                // After deleting the account, you would then call the logoutUser() method to log out the user and return them to the login screen
+                            }
+
+
+                            public void onClick(DialogInterface dialog, int id) {
+                                // Delete the account and logout the user
+                                deleteAccount();
+                                logoutUser();
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
+
+
+
         return view;
     }
 
