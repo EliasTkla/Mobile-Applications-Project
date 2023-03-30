@@ -3,34 +3,25 @@ package com.example.fitlife;
 public class UserData {
     //TODO Potentially add any weight/height/age fields for use in db and app
     //Variables
-    private int user_id;
     private String fname;
     private String lname;
     private String email;
-    private String username;
     private String password;
+    private Double weight;
+    private Double height;
+    private Integer age;
 
     //Constructor
-    public UserData(int user_id, String fname, String lname, String email, String username, String password) {
-        this.user_id = user_id;
+    public UserData(String fname, String lname, String email, String password, Double weight, Double height, Integer age) {
         this.fname = fname;
         this.lname = lname;
         this.email = email;
-        this.username = username;
         this.password = password;
+        this.weight = weight;
+        this.height = height;
+        this.age = age;
     }
 
-    //Getters and Setters
-    public UserData() {
-    }
-
-    public int getUserId() {
-        return user_id;
-    }
-
-    public void setUserId(int user_id) {
-        this.user_id = user_id;
-    }
 
     public String getFname() {
         return fname;
@@ -54,14 +45,6 @@ public class UserData {
         this.email = email;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getPassword() {
         return password;
     }
@@ -69,6 +52,31 @@ public class UserData {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public Double getWeight(){
+        return weight;
+    }
+
+    public void setWeight(Double newWeight){
+        this.weight = newWeight;
+    }
+
+    public Double getHeight(){
+        return height;
+    }
+
+    public void setHeight(Double newHeight){
+        this.weight = newHeight;
+    }
+
+    public Integer getAge(){
+        return age;
+    }
+
+    public void setAge(Integer newAge){
+        this.age = newAge;
+    }
+
     //TOString Method
     @Override
     public String toString() {

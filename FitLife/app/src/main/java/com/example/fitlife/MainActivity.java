@@ -26,11 +26,13 @@ public class MainActivity extends AppCompatActivity {
     ProfileFragment profileFragment = new ProfileFragment();
     Fragment currentActive;
 
+    SQLiteManager sqLiteManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        sqLiteManager = new SQLiteManager(MainActivity.this);
         bottomNavigationView = findViewById(R.id.navigation_bar);
 
         fragmentManager.beginTransaction().add(R.id.page_container, homeFragment).hide(homeFragment).commit();

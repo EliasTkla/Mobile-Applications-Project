@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.io.Serializable;
@@ -16,10 +17,10 @@ import java.util.ArrayList;
 
 public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineViewHolder> {
     ArrayList<RoutineData> routineData;
-    DiscoverFragment context;
+    Fragment context;
     View view;
 
-    public RoutineAdapter(ArrayList<RoutineData> data, DiscoverFragment context){
+    public RoutineAdapter(ArrayList<RoutineData> data, Fragment context){
         this.routineData = data;
         this.context = context;
     }
@@ -48,12 +49,7 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
             public void onClick(View view) {
                 Intent detailsPage = new Intent(view.getContext(), RoutineDetailsActivity.class);
 
-                detailsPage.putExtra("title", holder.titleView.getText());
-                detailsPage.putExtra("creator", "By: "+holder.creatorView.getText());
-                detailsPage.putExtra("level", "Level: "+holder.levelView.getText());
-                detailsPage.putExtra("frequency", holder.frequencyView.getText());
-                detailsPage.putExtra("length", holder.lengthView.getText());
-                detailsPage.putExtra("workouts", workouts);
+                detailsPage.putExtra("routine id", dataList.getId());
 
                 detailsPage.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 view.getContext().startActivity(detailsPage);
@@ -82,4 +78,3 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
         }
     }
 }
-
