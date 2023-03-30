@@ -21,6 +21,10 @@
             android:exported="false" />
 
         <activity
+            android:name=".EditProfileFragment"
+            />
+
+        <activity
             android:name=".LoginActivity"
             android:exported="true" >
 
@@ -44,10 +48,7 @@
             android:exported="false"
             android:parentActivityName=".MainActivity" />
 
-        <activity
-            android:name=".BodyMeasurementsActivity"
-            android:exported="false"
-            android:parentActivityName=".MainActivity" />
+
     </application>
 
 </manifest>
