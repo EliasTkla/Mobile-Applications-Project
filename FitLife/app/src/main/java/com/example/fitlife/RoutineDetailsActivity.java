@@ -76,15 +76,10 @@ public class RoutineDetailsActivity extends AppCompatActivity {
 
         if (saved) {
             saveButton.setBackgroundResource(R.drawable.ic_bookmarked);
-
-            SavedWorkoutsFragment savedWorkoutsFragment = (SavedWorkoutsFragment) getSupportFragmentManager().findFragmentByTag("saved_page");
-
-            if (savedWorkoutsFragment != null && savedWorkoutsFragment.isVisible()) {
                 if (created) {
                     saveButton.setVisibility(View.GONE);
                     deleteButton.setVisibility(View.VISIBLE);
                 }
-            }
         } else {
             saveButton.setBackgroundResource(R.drawable.ic_bookmark);
         }

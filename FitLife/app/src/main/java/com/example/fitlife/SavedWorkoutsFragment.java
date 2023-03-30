@@ -102,7 +102,6 @@ public class SavedWorkoutsFragment extends Fragment {
         String user_name = sharedPreferences.getString("fname_key", null) + " " + sharedPreferences.getString("lname_key", null);
 
         routines = db.getUserRoutines(userID);
-
         RoutineAdapter adapter = new RoutineAdapter(routines, SavedWorkoutsFragment.this);
         routine_list.setAdapter(adapter);
 
@@ -131,6 +130,8 @@ public class SavedWorkoutsFragment extends Fragment {
                 createdRoutineID = db.getRoutineID(et_routine_name.getText().toString());
                 db.addUserRoutines(createdRoutineID, userID);
                 routines = db.getUserRoutines(userID);
+                RoutineAdapter adapter = new RoutineAdapter(routines, SavedWorkoutsFragment.this);
+                routine_list.setAdapter(adapter);
                 new_routine.setVisibility(View.GONE);
                 new_workout.setVisibility(View.VISIBLE);
                 new_routine.invalidate();
@@ -161,7 +162,8 @@ public class SavedWorkoutsFragment extends Fragment {
                         createdRoutineID);
                 db.addWorkout(workoutData, createdRoutineID);
                 routines = db.getUserRoutines(userID);
-
+                RoutineAdapter adapter = new RoutineAdapter(routines, SavedWorkoutsFragment.this);
+                routine_list.setAdapter(adapter);
                 set_Workout.getText().clear();
                 set_day.getText().clear();
                 set_reps.getText().clear();

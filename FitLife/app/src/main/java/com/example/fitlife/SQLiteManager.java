@@ -369,7 +369,7 @@ public class SQLiteManager extends SQLiteOpenHelper {
                         routines.add(new RoutineData(rID, name, creator, level, frequency, length, workouts));
                     } while (cursor.moveToNext());
                 } else {
-                    Toast.makeText(context.getApplicationContext(), "No routines available!", Toast.LENGTH_LONG).show();
+//                    Toast.makeText(context.getApplicationContext(), "No routines available!", Toast.LENGTH_LONG).show();
                 }
                 cursor.close();
             } while (c.moveToNext());

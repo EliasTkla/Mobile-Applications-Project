@@ -54,10 +54,14 @@ public class MainActivity extends AppCompatActivity {
                     currentActive = homeFragment;
                     return true;
                 } else if(item.getItemId() == R.id.discover){
+                    fragmentManager.beginTransaction().detach(discoverFragment).commitNow();
+                    fragmentManager.beginTransaction().attach(discoverFragment).commitNow();
                     fragmentManager.beginTransaction().hide(currentActive).show(discoverFragment).commit();
                     currentActive = discoverFragment;
                     return true;
                 } else if(item.getItemId() == R.id.saved_workouts){
+                    fragmentManager.beginTransaction().detach(savedWorkoutsFragment).commitNow();
+                    fragmentManager.beginTransaction().attach(savedWorkoutsFragment).commitNow();
                     fragmentManager.beginTransaction().hide(currentActive).show(savedWorkoutsFragment).commit();
                     currentActive = savedWorkoutsFragment;
                     return true;
