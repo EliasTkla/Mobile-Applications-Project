@@ -338,12 +338,12 @@ public class SQLiteManager extends SQLiteOpenHelper {
         return routine;
     }
 
-    public void deleteRoutine(RoutineData routine) {
+    public void deleteRoutine(int routineID) {
         SQLiteDatabase sqLiteDatabase = this.getReadableDatabase();
 
-        long status = sqLiteDatabase.delete("ROUTINES", "ROUTINE_ID = ?", new String[]{String.valueOf(routine.getId())});
-        long status1 = sqLiteDatabase.delete("WORKOUTS", "ROUTINE_ID = ?", new String[]{String.valueOf(routine.getId())});
-        long status2 = sqLiteDatabase.delete("USER_ROUTINES", "ROUTINE_ID = ?", new String[]{String.valueOf(routine.getId())});
+        long status = sqLiteDatabase.delete("ROUTINES", "ROUTINE_ID = ?", new String[]{String.valueOf(routineID)});
+        long status1 = sqLiteDatabase.delete("WORKOUTS", "ROUTINE_ID = ?", new String[]{String.valueOf(routineID)});
+        long status2 = sqLiteDatabase.delete("USER_ROUTINES", "ROUTINE_ID = ?", new String[]{String.valueOf(routineID)});
 
         if(status != -1 && status1 != -1 && status2!= -1){
             Toast.makeText(context.getApplicationContext(), "Routine deleted!", Toast.LENGTH_LONG).show();
@@ -411,6 +411,25 @@ public class SQLiteManager extends SQLiteOpenHelper {
             }while(c.moveToNext());
         }
         return routineID;
+    }
+
+    //Checks if its your created routine, to determine if you can delete it or delete workouts in it
+    public boolean isRoutineCreated(RoutineData routineData, String userName) {
+        SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT ROUTINE_ID FROM ROUTINES WHERE ROUTINE_NAME = ? AND ROUTINE_CREATOR = ?", new String[]{String.valueOf(routineData.getTitle()), (userName)});
+
+        int idCheck = -1;
+        if (cursor.moveToFirst() && cursor.getCount() >= 1) {
+            idCheck = cursor.getInt(0);
+        }
+        cursor.close();
+        sqLiteDatabase.close();
+
+        if (idCheck == routineData.getId()) {
+            return true;
+        }
+
+        return false;
     }
 
     //Individual Workouts DB Helper Methods

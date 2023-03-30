@@ -28,7 +28,6 @@ public class MainActivity extends AppCompatActivity {
     SavedWorkoutsFragment savedWorkoutsFragment = new SavedWorkoutsFragment();
     ProfileFragment profileFragment = new ProfileFragment();
     Fragment currentActive;
-    FragmentTransaction ft;
     SQLiteManager sqLiteManager;
 
     @Override
@@ -47,9 +46,6 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager.beginTransaction().show(homeFragment).commit();
         currentActive = homeFragment;
 
-        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("user_info", Context.MODE_PRIVATE);
-        int userID = Integer.parseInt(sharedPreferences.getString("user_id", null));
-
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -58,14 +54,16 @@ public class MainActivity extends AppCompatActivity {
                     currentActive = homeFragment;
                     return true;
                 } else if(item.getItemId() == R.id.discover){
+                    fragmentManager.beginTransaction().detach(discoverFragment).commitNow();
+                    fragmentManager.beginTransaction().attach(discoverFragment).commitNow();
                     fragmentManager.beginTransaction().hide(currentActive).show(discoverFragment).commit();
                     currentActive = discoverFragment;
                     return true;
                 } else if(item.getItemId() == R.id.saved_workouts){
-                    if (savedWorkoutsFragment != null) {
+                    fragmentManager.beginTransaction().detach(savedWorkoutsFragment).commitNow();
+                    fragmentManager.beginTransaction().attach(savedWorkoutsFragment).commitNow();
                     fragmentManager.beginTransaction().hide(currentActive).show(savedWorkoutsFragment).commit();
                     currentActive = savedWorkoutsFragment;
-                    }
                     return true;
                 } else if(item.getItemId() == R.id.profile){
                     fragmentManager.beginTransaction().hide(currentActive).show(profileFragment).commit();
