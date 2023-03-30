@@ -1,5 +1,7 @@
 package com.example.fitlife;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -59,12 +61,9 @@ public class SavedWorkoutsFragment extends Fragment {
 
     int createdRoutineID;
 
-
-
-
     ArrayList<RoutineData> routines = new ArrayList<>();
 
-    boolean deleteFlag; //Carries over to the routine details view to determine if workouts can be deleted
+    boolean createdRoutine; //Carries over to the routine details view to determine if workouts can be deleted and edited, true if created, false if saved
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -97,10 +96,12 @@ public class SavedWorkoutsFragment extends Fragment {
         set_Sets = view.findViewById(R.id.set_Sets);
 
         SQLiteManager db = new SQLiteManager(getActivity());
-        UserData userData = new UserData("First", "Last", "email", "pass", 182.0, 172.0, 23);
 
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("user_info", Context.MODE_PRIVATE);
+        int userID = Integer.parseInt(sharedPreferences.getString("user_id", null));
+        String user_name = sharedPreferences.getString("fname_key", null) + " " + sharedPreferences.getString("lname_key", null);
 
-        routines = db.getUserRoutines(userData);
+        routines = db.getUserRoutines(userID);
 
         RoutineAdapter adapter = new RoutineAdapter(routines, SavedWorkoutsFragment.this);
         routine_list.setAdapter(adapter);
@@ -121,15 +122,15 @@ public class SavedWorkoutsFragment extends Fragment {
             public void onClick(View v) {
                 routineData = new RoutineData(-1,
                         et_routine_name.getText().toString(),
-                        "Placeholder",
+                        user_name,
                         et_routine_level.getText().toString(),
                         Integer.parseInt(et_routine_freq.getText().toString()),
                         Integer.parseInt(et_routine_length.getText().toString()), null);
 
+                db.addRoutines(routineData);
                 createdRoutineID = db.getRoutineID(et_routine_name.getText().toString());
-//                db.addRoutines(routineData);
-//                db.addUserRoutines(routineData, userData);
-
+                db.addUserRoutines(createdRoutineID, userID);
+                routines = db.getUserRoutines(userID);
                 new_routine.setVisibility(View.GONE);
                 created_routine.setVisibility(View.VISIBLE);
                 new_routine.invalidate();
@@ -141,19 +142,6 @@ public class SavedWorkoutsFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                WorkoutData workoutData = new WorkoutData(-1 ,
-                        set_Workout.getText().toString(),
-                        set_day.getText().toString(),
-                        Integer.parseInt(set_reps.getText().toString()),
-                        Integer.parseInt(set_Sets.getText().toString()),
-                        createdRoutineID);
-
-                workouts.add(workoutData);
-
-                routineData.setWorkoutsList(workouts);
-                db.addRoutines(routineData);
-                db.addUserRoutines(routineData, userData);
-
                 created_routine.setVisibility(View.GONE);
                 new_workout.setVisibility(View.VISIBLE);
                 created_routine.invalidate();
@@ -164,6 +152,16 @@ public class SavedWorkoutsFragment extends Fragment {
         add_workout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                WorkoutData workoutData = new WorkoutData(-1 ,
+                        set_Workout.getText().toString(),
+                        set_day.getText().toString(),
+                        Integer.parseInt(set_reps.getText().toString()),
+                        Integer.parseInt(set_Sets.getText().toString()),
+                        createdRoutineID);
+                db.addWorkout(workoutData, createdRoutineID);
+                routines = db.getUserRoutines(userID);
+
                 created_routine.setVisibility(View.VISIBLE);
                 new_workout.setVisibility(View.GONE);
                 created_routine.invalidate();

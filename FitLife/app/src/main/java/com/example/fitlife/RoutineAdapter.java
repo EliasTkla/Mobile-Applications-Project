@@ -20,6 +20,8 @@ public class RoutineAdapter extends RecyclerView.Adapter<RoutineAdapter.RoutineV
     Fragment context;
     View view;
 
+    boolean createdFlag;
+
     public RoutineAdapter(ArrayList<RoutineData> data, Fragment context){
         this.routineData = data;
         this.context = context;

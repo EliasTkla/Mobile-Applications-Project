@@ -1,6 +1,8 @@
 package com.example.fitlife;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +37,9 @@ public class RoutineDetailsActivity extends AppCompatActivity {
         saveButton = findViewById(R.id.save_routine_button);
         sqLiteManager = new SQLiteManager(getApplicationContext());
 
+        SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("user_info", Context.MODE_PRIVATE);
+        int userID = Integer.parseInt(sharedPreferences.getString("user_id", null));
+
         Intent details = getIntent();
 
         int id = details.getIntExtra("routine id", 0);
@@ -67,11 +72,11 @@ public class RoutineDetailsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!saved) {
-                    sqLiteManager.saveUserRoutine(12, 12, false);
+                    sqLiteManager.saveUserRoutine(userID, id,  false);
                     saveButton.setBackgroundResource(R.drawable.ic_bookmarked);
                     saved = true;
                 } else {
-                    sqLiteManager.unSaveUserRoutine(12 ,12);
+                    sqLiteManager.unSaveUserRoutine(userID ,id);
                     saveButton.setBackgroundResource(R.drawable.ic_bookmark);
                     saved = false;
                 }
