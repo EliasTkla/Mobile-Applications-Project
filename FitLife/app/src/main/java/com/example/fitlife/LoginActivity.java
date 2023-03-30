@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -34,6 +35,12 @@ public class LoginActivity extends AppCompatActivity {
 
         sqLiteManager = new SQLiteManager(LoginActivity.this);
         sharedPreferences = getSharedPreferences("user_info", Context.MODE_PRIVATE);
+
+        if(sharedPreferences.getString("user_id", null) != null){
+            Intent home = new Intent(LoginActivity.this, MainActivity.class);
+            startActivity(home);
+            finish();
+        }
 
         login_btn.setOnClickListener(new View.OnClickListener() {
             @Override
